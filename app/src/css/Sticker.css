@@ -62,39 +62,48 @@
 }
 
 .middle-sticker {
-     position: absolute;
-     top: 13%;
+    /* position: absolute;
+      top: 13%;
      left: 47%;
      width: 27%;
      height: 90%;
      background-size: contain;
      background-repeat: no-repeat;
-     background-position: center;
+     background-position: center; */
+     position: absolute;
+     height: 65%;
+     top: 25.5%;
+     left: 47%;
+     overflow: hidden;
+     /* right: 58%; */
 }
 
 .sticker-line {
      display: flex;
+     /* margin-top: 49px; */
      gap: 10px;
-     margin-left: 25px;
-     margin-right: 25px;
+     margin-top: 28px;
+     margin-left: 23px;
+     margin-right: 23px;
 }
 
 .sticker-line-1 {
      margin-top: 35%;
      display: flex;
      gap: 10px;
+     margin-top: 49px;
      margin-left: 25px;
-     margin-right: 25px;
+     margin-right: 23px;
 }
 
 .sticker {
      width: 50%;
-     height: 139px;
+     height: 118px;
      background-image: url('../assets/Sticker/sticker.png');
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
-     margin: 5px auto;
+     /* margin: 5px auto; */
      text-align: center;
 }
 
@@ -151,6 +160,7 @@
 }
 
 .konva-image {
+     /* background-color: red; */
      position: absolute;
      left: -2%;
      top: -10%;

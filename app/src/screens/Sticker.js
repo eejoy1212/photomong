@@ -11,6 +11,7 @@ import Konva from 'konva';
 import useImage from 'use-image';
 import { StickerItem } from '../screens/StickerItem';
 import axios from 'axios';
+import { Resizable } from 're-resizable';
 // Sticker
 import { stickers } from './stickers.data';
 
@@ -67,6 +68,7 @@ import print_vn_click from '../assets/Sticker/vn/print-pressed.png';
 function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();
+     const [src,setSrc]=useState(null)
      const [hoveredImage, setHoveredImage] = useState(null);
      const [selectedLayout, setSelectedLayout] = useState(null);
      const [selectedPhotos, setSelectedPhotos] = useState([]);
@@ -93,8 +95,8 @@ function Filter() {
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
-     background.src = sessionStorage.getItem('downloaded-image');
-
+     background.src = '/photo_saved/photo.png'//sessionStorage.getItem('downloaded-image');
+console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
      const [selectedCategory, setSelectedCategory] = useState('MOOD');
 
      const stageRef = useRef(null);
@@ -107,6 +109,7 @@ function Filter() {
 
      useEffect(() => {
           if (!background.src) {
+               // background.src = sessionStorage.getItem('downloaded-image');
             window.location.reload();
           }
      }, []);
@@ -145,14 +148,20 @@ function Filter() {
           // get session storage selectedLayout
           const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
           if (sessionSelectedLayout) {
-               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout)[0];
+             
+               console.log("레이아웃을 찾아서>>>",parsedSelectedLayout.photo_full)
                setSelectedLayout(parsedSelectedLayout.photo_cover);
-               setMyBackground(parsedSelectedLayout.photo);
+               // setMyBackground(parsedSelectedLayout.photo);
+               setMyBackground(parsedSelectedLayout.photo_full);
+               // background.src=parsedSelectedLayout.photo_full
+               // setSrc(parsedSelectedLayout.photo_full)
           }
 
           // Retrieve selected photos from session storage
           const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
           if (storedSelectedPhotos) {
+            
                setSelectedPhotos(storedSelectedPhotos);
           }
 
@@ -165,7 +174,8 @@ function Filter() {
           // Retrieve selected frame from session storage
           const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
           if (storedSelectedFrame) {
-               setSelectedFrame(storedSelectedFrame.frame);
+              
+                  setSelectedFrame(storedSelectedFrame.frame);
           }
      }, []);
 
@@ -512,10 +522,53 @@ function Filter() {
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
      const myStickers = chunkArray(stickersData, 4);
+     // console.log("프레임 백그라운드",myBackground)
+     //크기 리사이징 예제코드
+     const [isDragging, setIsDragging] = useState(false);
+     const [position, setPosition] = useState({ x: 100, y: 100 }); // 초기 위치
+     const [radius, setRadius] = useState(50); // 초기 반지름
+   
+     const handleMouseDown = (e) => {
+       setIsDragging(true);
+     };
+   
+     const handleMouseUp = () => {
+       setIsDragging(false);
+     };
+   
+     const handleMouseMove = (e) => {
+       if (!isDragging) return;
+   
+       const newPosition = {
+         x: e.clientX,
+         y: e.clientY
+       };
+       setPosition(newPosition);
+     };
+   
+     const handleMouseLeave2 = () => {
+       setIsDragging(false);
+     };
+   
+     const handleMouseWheel = (e) => {
+       if (e.deltaY > 0) {
+         setRadius(radius - 5);
+       } else {
+         setRadius(radius + 5);
+       }
+     };
      return (
           <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
+              
+              
                <div className="left-sticker">
+               {/* <img
+                            
+                            width={"300px"}
+                            height={"300px"}
+                            src={myBackground}
+                            /> */}
                     <Stage
                          width={1200}
                          height={1000}
@@ -525,36 +578,92 @@ function Filter() {
                          onMouseDown={checkDeselect}
                          onTouchStart={checkDeselect}
                          ref={stageRef}
-                    >
+                    > 
                          <Layer>
+                    
                               <KonvaImage
                                    image={background}
                                    height={1000}
                                    width={1200}
                                    id="backgroundImage"
                               />
+                            
                               {images.map((image, i) => {
                                    return (
-                                        <StickerItem
-                                             onDelete={() => {
+                                
+                                   //      <div
+                                   //      className="container"
+                                   //      style={{
+                                   //          backgroundColor:"red"
+                                   //      }}
+                                   //      onMouseMove={handleMouseMove}
+                                   //      onMouseUp={handleMouseUp}
+                                   //      onMouseLeave={handleMouseLeave2}
+                                   //      onWheel={handleMouseWheel}
+                                   //    >
+                                   //      <div
+                                   //        className="circle"
+                                   //        style={{
+                                   //          width: `100px`,
+                                   //          height: `100px`,
+                                   //          borderRadius: '50%',
+                                   //          backgroundColor: 'blue',
+                                   //          position: 'absolute',
+                                   //          top: `${position.y - radius}px`,
+                                   //          left: `${position.x - radius}px`,
+                                   //          cursor: 'move'
+                                   //        }}
+                                   //        onMouseDown={handleMouseDown}
+                                   //      />
+                                   //    </div>
+                                         <StickerItem
+                                        //  shapeProps={image}
+                                         isSelected={i===selectedId}
+                                              onDelete={() => {
+                                                   const newImages = [...images];
+                                                   console.log("new image before",newImages)
+                                                   newImages.splice(i, 1);
+                                                   console.log("new image after",newImages)
+                                                   
+                                                   setImages(newImages);
+                                              }}
+                                              onSelect={(event)=>{
+
+                                                  console.log("리사이즈 할거",images[i])
+                                             selectShape(i) 
+                                             }}
+                                              onDragEnd={(event) => {
+                                             
+                                                   image.x = event.target.x();
+                                                   image.y = event.target.y();
+                                              }}
+                                              onChange={(newAttrs) => {
                                                   const newImages = [...images];
-                                                  newImages.splice(i, 1);
+                                                  newImages[i] = newAttrs;
+                                                  console.log("변경",newImages)
                                                   setImages(newImages);
-                                             }}
-                                             onDragEnd={(event) => {
-                                                  image.x = event.target.x();
-                                                  image.y = event.target.y();
-                                             }}
-                                             key={i}
-                                             image={image}
-                                             shapeProps={image}
-                                        />
+                                                }}
+                                              key={i}
+                                              image={image}
+                                              shapeProps={image}
+                                         />
+                                        
                                    );
                               })}
+                               
                          </Layer>
                     </Stage>
                </div>
-               <div className="middle-sticker" style={{ backgroundImage: `url(${sticker_frame})` }}>
+               <div className="middle-sticker"
+               
+               
+               style={{
+                    // backgroundColor:"red",
+                    // overflowY:"hidden",
+                    backgroundImage: `url(${sticker_frame})`
+                     }}>
+               
+               
                     {myStickers.map((group, index) => (
                          <div key={index} className={index === 0 ? 'sticker-line-1' : 'sticker-line'}>
                               {group.map((mySticker, photoIndex) => (

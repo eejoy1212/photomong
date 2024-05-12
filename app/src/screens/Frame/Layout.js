@@ -191,6 +191,8 @@ function Layout() {
                     else if(sessionStorage.getItem('styleBg')===minBg){
                          idx=3
                     }
+                    console.log('스타일 ex season',sessionStorage.getItem('styleBg'))
+                    setSliceIdx(idx)
                     setSlicedLayouts(...resAll[idx])
                } catch (error) {
                     console.error(error)
@@ -202,18 +204,51 @@ function Layout() {
 
      const handleClick = (index,clickedTitle) => {
           if (draging)return
-          sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
+         //라우팅 할 때 리스트 한번에 보내기
+          // sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
           // setClickedIndex(index === clickedIndex ? null : index);
           if (clickedTitles.includes(clickedTitle)) {
-               setClickedTitles(prevTitles => prevTitles.filter(clickedTitle => clickedTitle !== clickedTitle));
-           } else {
+               setClickedTitles(prevTitles => prevTitles.filter(clickedTitle => clickedTitle != clickedTitle));
+
+          
+          } else {
                setClickedTitles(prevTitles => [...prevTitles, clickedTitle]);
+               
            }
+          
+          
           setConfirmClick(confirmButton)
      }
 
-     const goToPayment = () => {
+     const goToPayment = () => {  
+         
           if (confirmClick === confirmButton) {
+               const selectedLayouts=[]
+            console.log("버튼 클릭",layouts,clickedTitles)
+            for (let i = 0; i < layouts.length; i++) {
+                    const fiveLayout = layouts[i];
+                    for (let j = 0; j < fiveLayout.length; j++) {
+                         const layout = fiveLayout[j];
+                        
+             
+                    for (let k = 0; k < layout.length; k++) {
+                         const element = layout[k];
+                                //   const filtered=layout.filter(l=>l.title)
+                        
+                         for (let l = 0; l < clickedTitles.length; l++) {
+                           if (element.title===clickedTitles[l]) {
+                               console.log("선택된 거",element.title) 
+                               selectedLayouts.push(element)
+                           }
+                              
+                         }
+                    }
+                    }
+                    
+               }
+               sessionStorage.setItem('selectedLayout', JSON.stringify(selectedLayouts));
+               // sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
+          
                navigate('/payment');
           }
      }

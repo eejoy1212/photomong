@@ -382,6 +382,7 @@ function Filter() {
                               element.style.backgroundImage = oldBackgroundImage;
                               element.style.backgroundColor = '';
                               sessionStorage.setItem('downloaded-image', data.photo_url);
+                              console.log("다운로드 이미지 set",data.photo_url)
                          }
                     })
                     .catch(error => {
@@ -640,7 +641,10 @@ function Filter() {
 
      // Chunk the selected photos array into arrays of 2 photos each
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
-
+     //임시, 나중에 주석처리 할 것
+useEffect(()=>{
+     storeImageCanvas()
+},[])
      return (
           <div className='filter-container' style={{ backgroundImage: `url(${background})`, cursor: 'none' }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/photo-choose")} onMouseEnter={() => hoverGoBackButton()} onMouseLeave={() => hoverGoBackButton()}></div>
