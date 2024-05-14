@@ -15,6 +15,7 @@ import Filter from './screens/Filter';
 import Sticker from './screens/Sticker';
 import Print from './screens/Print';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PaymentNumber from './screens/Payment/PaymentNumber';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/frame" element={<Frame />} />
         <Route path="/background" element={<Background />} />
         <Route path="/layout" element={<Layout />} />
+        <Route path="/payment-number" element={<PaymentNumber />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<Result />} />
         <Route path="/payment-cash" element={<Cash />} />

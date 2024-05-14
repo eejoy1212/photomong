@@ -57,7 +57,7 @@ import y2k_kr_click from '../assets/Sticker/kr/y2k-pressed.png';
 import y2k_vn from '../assets/Sticker/vn/y2k-default.png';
 import y2k_vn_click from '../assets/Sticker/vn/y2k-pressed.png';
 
-import print from '../assets/Sticker/print.png'; 
+import print from '../assets/Sticker/print.png';
 import print_click from '../assets/Sticker/print_click.png';
 import print_kr from '../assets/Sticker/kr/print-default.png';
 import print_kr_click from '../assets/Sticker/kr/print-pressed.png';
@@ -68,7 +68,7 @@ import print_vn_click from '../assets/Sticker/vn/print-pressed.png';
 function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();
-     const [src,setSrc]=useState(null)
+     const [src, setSrc] = useState(null)
      const [hoveredImage, setHoveredImage] = useState(null);
      const [selectedLayout, setSelectedLayout] = useState(null);
      const [selectedPhotos, setSelectedPhotos] = useState([]);
@@ -82,7 +82,9 @@ function Filter() {
      const [language, setLanguage] = useState('en');
 
      const [backgroundImage, setBackgroundImage] = useState(background_en);
-
+     //스크롤 인덱스
+     const [scrollIdx, setScrollIdx] = useState(0)
+     const [dragStartY, setDragStartY] = useState(0);
      // Sticker
      const [mood, setMood] = useState(null);
      const [lovely, setLovely] = useState(null);
@@ -96,7 +98,7 @@ function Filter() {
      const background = new Image();
      background.crossOrigin = 'Anonymous';
      background.src = '/photo_saved/photo.png'//sessionStorage.getItem('downloaded-image');
-console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
+     console.log("다운로드 백그라운드", sessionStorage.getItem('photos'))
      const [selectedCategory, setSelectedCategory] = useState('MOOD');
 
      const stageRef = useRef(null);
@@ -110,7 +112,7 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
      useEffect(() => {
           if (!background.src) {
                // background.src = sessionStorage.getItem('downloaded-image');
-            window.location.reload();
+               window.location.reload();
           }
      }, []);
 
@@ -140,17 +142,17 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
                     setLovely(lovely_vn);
                     setCartoon(cartoon_vn);
                     setY2k(y2k_vn);
-                    setPrintButton(print_vn);  
-                    setGoBackButton(goback_vn);                  
-               }                    
+                    setPrintButton(print_vn);
+                    setGoBackButton(goback_vn);
+               }
           }
 
           // get session storage selectedLayout
           const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
           if (sessionSelectedLayout) {
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout)[0];
-             
-               console.log("레이아웃을 찾아서>>>",parsedSelectedLayout.photo_full)
+
+               console.log("레이아웃을 찾아서>>>", parsedSelectedLayout.photo_full)
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                // setMyBackground(parsedSelectedLayout.photo);
                setMyBackground(parsedSelectedLayout.photo_full);
@@ -161,7 +163,7 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
           // Retrieve selected photos from session storage
           const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
           if (storedSelectedPhotos) {
-            
+
                setSelectedPhotos(storedSelectedPhotos);
           }
 
@@ -174,8 +176,8 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
           // Retrieve selected frame from session storage
           const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
           if (storedSelectedFrame) {
-              
-                  setSelectedFrame(storedSelectedFrame.frame);
+
+               setSelectedFrame(storedSelectedFrame.frame);
           }
      }, []);
 
@@ -478,7 +480,7 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
                } else if (language == 'vi') {
                     setMood(mood == mood_vn_click ? mood_vn : mood_vn_click);
                } else if (language == 'ko') {
-                    setMood(mood == mood_kr_click ? mood_kr : mood_kr_click);                    
+                    setMood(mood == mood_kr_click ? mood_kr : mood_kr_click);
                }
           } else if (stickerEffect == 'lovely') {
                if (language == 'en') {
@@ -520,50 +522,76 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
      // Chunk the selected photos array into arrays of 2 photos each
      const stickersData = stickers.filter(sticker => sticker.category === selectedCategory);
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
-
+     //스크롤 하면 인덱스에 따라 스티커 타입 정하기
      const myStickers = chunkArray(stickersData, 4);
      // console.log("프레임 백그라운드",myBackground)
      //크기 리사이징 예제코드
      const [isDragging, setIsDragging] = useState(false);
      const [position, setPosition] = useState({ x: 100, y: 100 }); // 초기 위치
      const [radius, setRadius] = useState(50); // 초기 반지름
-   
+
      const handleMouseDown = (e) => {
-       setIsDragging(true);
+          setIsDragging(true);
      };
-   
+
      const handleMouseUp = () => {
-       setIsDragging(false);
+          setIsDragging(false);
      };
-   
+
      const handleMouseMove = (e) => {
-       if (!isDragging) return;
-   
-       const newPosition = {
-         x: e.clientX,
-         y: e.clientY
-       };
-       setPosition(newPosition);
+          if (!isDragging) return;
+
+          const newPosition = {
+               x: e.clientX,
+               y: e.clientY
+          };
+          setPosition(newPosition);
      };
-   
+
      const handleMouseLeave2 = () => {
-       setIsDragging(false);
+          setIsDragging(false);
      };
-   
+
      const handleMouseWheel = (e) => {
-       if (e.deltaY > 0) {
-         setRadius(radius - 5);
-       } else {
-         setRadius(radius + 5);
-       }
+          if (e.deltaY > 0) {
+               setRadius(radius - 5);
+          } else {
+               setRadius(radius + 5);
+          }
      };
+     console.log("my stickers", myStickers, stickers)
+     const onDragStart = (event) => {
+          setDragStartY(event.clientY); // 드래그 시작 위치의 Y 좌표를 저장
+      };
+
+     const onDragEnd = (event) => {
+          const dragEndY = event.clientY; // 드래그 끝 위치의 Y 좌표
+  
+          if (dragEndY > dragStartY) { // 드래그가 위에서 아래로 일어났는지 확인
+              setScrollIdx(prevIdx => (prevIdx + 1) % 4);
+              const nextScrollIdx = (scrollIdx + 1) % 4;
+              console.log("스크롤 인덱스>>>", nextScrollIdx)
+              if (nextScrollIdx === 0) {
+                  setSelectedCategory("MOOD");
+              }
+              else if (nextScrollIdx === 1) {
+                  setSelectedCategory("LOVELY");
+              }
+              else if (nextScrollIdx === 2) {
+                  setSelectedCategory("CARTOON");
+              }
+              else if (nextScrollIdx === 3) {
+                  setSelectedCategory("Y2K");
+              }
+          }
+      };
      return (
           <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
-              
-              
+
+
                <div className="left-sticker">
-               {/* <img
+                    {/* <img
                             
                             width={"300px"}
                             height={"300px"}
@@ -578,92 +606,97 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
                          onMouseDown={checkDeselect}
                          onTouchStart={checkDeselect}
                          ref={stageRef}
-                    > 
+                    >
                          <Layer>
-                    
+
                               <KonvaImage
                                    image={background}
                                    height={1000}
                                    width={1200}
                                    id="backgroundImage"
                               />
-                            
+
                               {images.map((image, i) => {
                                    return (
-                                
-                                   //      <div
-                                   //      className="container"
-                                   //      style={{
-                                   //          backgroundColor:"red"
-                                   //      }}
-                                   //      onMouseMove={handleMouseMove}
-                                   //      onMouseUp={handleMouseUp}
-                                   //      onMouseLeave={handleMouseLeave2}
-                                   //      onWheel={handleMouseWheel}
-                                   //    >
-                                   //      <div
-                                   //        className="circle"
-                                   //        style={{
-                                   //          width: `100px`,
-                                   //          height: `100px`,
-                                   //          borderRadius: '50%',
-                                   //          backgroundColor: 'blue',
-                                   //          position: 'absolute',
-                                   //          top: `${position.y - radius}px`,
-                                   //          left: `${position.x - radius}px`,
-                                   //          cursor: 'move'
-                                   //        }}
-                                   //        onMouseDown={handleMouseDown}
-                                   //      />
-                                   //    </div>
-                                         <StickerItem
-                                        //  shapeProps={image}
-                                         isSelected={i===selectedId}
-                                              onDelete={() => {
-                                                   const newImages = [...images];
-                                                   console.log("new image before",newImages)
-                                                   newImages.splice(i, 1);
-                                                   console.log("new image after",newImages)
-                                                   
-                                                   setImages(newImages);
-                                              }}
-                                              onSelect={(event)=>{
 
-                                                  console.log("리사이즈 할거",images[i])
-                                             selectShape(i) 
+                                        //      <div
+                                        //      className="container"
+                                        //      style={{
+                                        //          backgroundColor:"red"
+                                        //      }}
+                                        //      onMouseMove={handleMouseMove}
+                                        //      onMouseUp={handleMouseUp}
+                                        //      onMouseLeave={handleMouseLeave2}
+                                        //      onWheel={handleMouseWheel}
+                                        //    >
+                                        //      <div
+                                        //        className="circle"
+                                        //        style={{
+                                        //          width: `100px`,
+                                        //          height: `100px`,
+                                        //          borderRadius: '50%',
+                                        //          backgroundColor: 'blue',
+                                        //          position: 'absolute',
+                                        //          top: `${position.y - radius}px`,
+                                        //          left: `${position.x - radius}px`,
+                                        //          cursor: 'move'
+                                        //        }}
+                                        //        onMouseDown={handleMouseDown}
+                                        //      />
+                                        //    </div>
+                                        <StickerItem
+                                             //  shapeProps={image}
+                                             isSelected={i === selectedId}
+                                             onDelete={() => {
+                                                  const newImages = [...images];
+                                                  console.log("new image before", newImages)
+                                                  newImages.splice(i, 1);
+                                                  console.log("new image after", newImages)
+
+                                                  setImages(newImages);
                                              }}
-                                              onDragEnd={(event) => {
-                                             
-                                                   image.x = event.target.x();
-                                                   image.y = event.target.y();
-                                              }}
-                                              onChange={(newAttrs) => {
+                                             onSelect={(event) => {
+
+                                                  console.log("리사이즈 할거", images[i])
+                                                  selectShape(i)
+                                             }}
+                                             onDragEnd={(event) => {
+
+                                                  image.x = event.target.x();
+                                                  image.y = event.target.y();
+                                             }}
+                                             onChange={(newAttrs) => {
                                                   const newImages = [...images];
                                                   newImages[i] = newAttrs;
-                                                  console.log("변경",newImages)
+                                                  console.log("변경", newImages)
                                                   setImages(newImages);
-                                                }}
-                                              key={i}
-                                              image={image}
-                                              shapeProps={image}
-                                         />
-                                        
+                                             }}
+                                             key={i}
+                                             image={image}
+                                             shapeProps={image}
+                                        />
+
                                    );
                               })}
-                               
+
                          </Layer>
                     </Stage>
                </div>
                <div className="middle-sticker"
-               
-               
-               style={{
-                    // backgroundColor:"red",
-                    // overflowY:"hidden",
-                    backgroundImage: `url(${sticker_frame})`
-                     }}>
-               
-               
+                    draggable={true}
+                    onDragStart={onDragStart}
+                    onDrag={() => {
+                         console.log("드래그 스티커 배경")
+                    }}
+                    onDragEnd={onDragEnd}
+
+                    style={{
+                         // backgroundColor:"red",
+                         // overflowY:"hidden",
+                         backgroundImage: `url(${sticker_frame})`
+                    }}>
+
+
                     {myStickers.map((group, index) => (
                          <div key={index} className={index === 0 ? 'sticker-line-1' : 'sticker-line'}>
                               {group.map((mySticker, photoIndex) => (
@@ -680,7 +713,9 @@ console.log("다운로드 백그라운드",sessionStorage.getItem('photos'))
                                              });
                                         }}
                                    >
-                                        <img className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px' />
+                                        <img className="sticker-image"
+                                             // draggable={false}
+                                             alt={mySticker.title} src={mySticker.photo} width='90px' height='90px' />
                                    </div>
                               ))}
                          </div>
