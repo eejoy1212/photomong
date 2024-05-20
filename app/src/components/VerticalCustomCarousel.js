@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../css/CustomCarousel.css';
+import './CustomCarousel.css';
 
-const CustomCarousel=({ images }) => {
+const VerticalCustomCarousel = ({ images }) => {
     const carouselRef = useRef(null);
     const [isDown, setIsDown] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    const [startY, setStartY] = useState(0);
+    const [scrollTop, setScrollTop] = useState(0);
 
     useEffect(() => {
         const carousel = carouselRef.current;
@@ -13,8 +13,8 @@ const CustomCarousel=({ images }) => {
         const handleMouseDown = (e) => {
             setIsDown(true);
             if (carousel) {
-                setStartX(e.pageX - carousel.offsetLeft);
-                setScrollLeft(carousel.scrollLeft);
+                setStartY(e.pageY - carousel.offsetTop);
+                setScrollTop(carousel.scrollTop);
             }
         };
 
@@ -24,16 +24,25 @@ const CustomCarousel=({ images }) => {
 
         const handleMouseUp = () => {
             setIsDown(false);
+            snapToClosestItem();
         };
 
         const handleMouseMove = (e) => {
             if (!isDown) return;
             e.preventDefault();
             if (carousel) {
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 3; // Scroll speed
-                carousel.scrollLeft = scrollLeft - walk;
+                const y = e.pageY - carousel.offsetTop;
+                const walk = (y - startY) * 3; // Scroll speed
+                carousel.scrollTop = scrollTop - walk;
             }
+        };
+
+        const snapToClosestItem = () => {
+            if (!carousel) return;
+            const itemHeight = carousel.querySelector('.image').offsetHeight;
+            const scrollY = carousel.scrollTop;
+            const index = Math.round(scrollY / itemHeight);
+            carousel.scrollTo({ top: index * itemHeight, behavior: 'smooth' });
         };
 
         if (carousel) {
@@ -51,23 +60,23 @@ const CustomCarousel=({ images }) => {
                 carousel.removeEventListener('mousemove', handleMouseMove);
             }
         };
-    }, [isDown, startX, scrollLeft]);
+    }, [isDown, startY, scrollTop]);
 
     return (
-        <div 
-        className='carousel-container'
-        ref={carouselRef}>
-        <div
-        className='carousel-images'
-        >
-            {images.map((src, index) => (
-                <img
-                className='image'
-                key={index} src={src} alt={`Image ${index + 1}`} />
-            ))}
+        <div className='v-carousel-container' ref={carouselRef}>
+            <div className='v-carousel-images'>
+                {images.map((src, index) => (
+                    <div
+                        className='image'
+                        key={index}
+                        style={{
+                            backgroundImage: `url(${src})`
+                        }}
+                    />
+                ))}
+            </div>
         </div>
-    </div>
     );
 };
 
-export default CustomCarousel;
+export default VerticalCustomCarousel;

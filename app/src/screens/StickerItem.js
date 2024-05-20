@@ -52,6 +52,7 @@ console.log("이미지에 아이디?",image)
 
     return (
         <Group
+        
         // ref={shapeRef}
         onClick={onSelect}
         onTap={onSelect}
@@ -98,6 +99,7 @@ console.log("이미지에 아이디?",image)
         >
             
             <KonvaImage
+            
                 ref={imageRef}
                 // ref={shapeRef}
                 width={image.width}
@@ -110,6 +112,7 @@ console.log("이미지에 아이디?",image)
                
             {/* {showDeleteButton && !isDragging && ( */}
                 <KonvaImage
+                
                     onTouchStart={onDelete}
                     onClick={onDelete}
                     image={deleteImage}

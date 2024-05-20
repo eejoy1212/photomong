@@ -65,6 +65,8 @@ import print_vn from '../assets/Sticker/vn/print-default.png';
 import print_vn_click from '../assets/Sticker/vn/print-pressed.png';
 //frame나오는 공간
 import frame_box from '../assets/Sticker/frame_box.png';
+import CustomCarousel from '../components/CustomCarousel';
+import VerticalCustomCarousel from '../components/VerticalCustomCarousel';
 
 function Filter() {
      const { t } = useTranslation();
@@ -74,7 +76,7 @@ function Filter() {
      const [selectedLayout, setSelectedLayout] = useState(null);
      const [selectedPhotos, setSelectedPhotos] = useState([]);
      const [filterEffect, setFilterEffect] = useState(null);
-     const [myBackground, setMyBackground] = useState(null);
+     const [myBackgrounds, setMyBackgrounds] = useState([]);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
@@ -151,12 +153,12 @@ function Filter() {
           // get session storage selectedLayout
           const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
           if (sessionSelectedLayout) {
-               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout)[0];
+               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
 
                console.log("레이아웃을 찾아서>>>", parsedSelectedLayout.photo_full)
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                // setMyBackground(parsedSelectedLayout.photo);
-               setMyBackground(parsedSelectedLayout.photo_full);
+               setMyBackgrounds(parsedSelectedLayout.map(it=>it.photo_full));
                // background.src=parsedSelectedLayout.photo_full
                // setSrc(parsedSelectedLayout.photo_full)
           }
@@ -601,15 +603,11 @@ function Filter() {
                          backgroundImage: `url(${frame_box})`
                     }}
                             />
-                    <div
-                            
-                            className='selected-frame'
-                            style={{
-                              // backgroundColor:"red",
-                              // overflowY:"hidden",
-                              backgroundImage: `url(${myBackground})`
-                         }}
+                            <VerticalCustomCarousel
+
+                            images={myBackgrounds}
                             />
+                   
                     <Stage
                          width={1200}
                          height={1000}
@@ -620,77 +618,20 @@ function Filter() {
                          onTouchStart={checkDeselect}
                          ref={stageRef}
                     >
-                         <Layer>
+                         <Layer
+                         
+                         >
 
                               <KonvaImage
+                              
                                    image={background}
                                    height={1000}
                                    width={1200}
                                    id="backgroundImage"
+                                   
                               />
 
-                              {images.map((image, i) => {
-                                   return (
-
-                                        //      <div
-                                        //      className="container"
-                                        //      style={{
-                                        //          backgroundColor:"red"
-                                        //      }}
-                                        //      onMouseMove={handleMouseMove}
-                                        //      onMouseUp={handleMouseUp}
-                                        //      onMouseLeave={handleMouseLeave2}
-                                        //      onWheel={handleMouseWheel}
-                                        //    >
-                                        //      <div
-                                        //        className="circle"
-                                        //        style={{
-                                        //          width: `100px`,
-                                        //          height: `100px`,
-                                        //          borderRadius: '50%',
-                                        //          backgroundColor: 'blue',
-                                        //          position: 'absolute',
-                                        //          top: `${position.y - radius}px`,
-                                        //          left: `${position.x - radius}px`,
-                                        //          cursor: 'move'
-                                        //        }}
-                                        //        onMouseDown={handleMouseDown}
-                                        //      />
-                                        //    </div>
-                                        <StickerItem
-                                             //  shapeProps={image}
-                                             isSelected={i === selectedId}
-                                             onDelete={() => {
-                                                  const newImages = [...images];
-                                                  console.log("new image before", newImages)
-                                                  newImages.splice(i, 1);
-                                                  console.log("new image after", newImages)
-
-                                                  setImages(newImages);
-                                             }}
-                                             onSelect={(event) => {
-
-                                                  console.log("리사이즈 할거", images[i])
-                                                  selectShape(i)
-                                             }}
-                                             onDragEnd={(event) => {
-
-                                                  image.x = event.target.x();
-                                                  image.y = event.target.y();
-                                             }}
-                                             onChange={(newAttrs) => {
-                                                  const newImages = [...images];
-                                                  newImages[i] = newAttrs;
-                                                  console.log("변경", newImages)
-                                                  setImages(newImages);
-                                             }}
-                                             key={i}
-                                             image={image}
-                                             shapeProps={image}
-                                        />
-
-                                   );
-                              })}
+                           
 
                          </Layer>
                     </Stage>

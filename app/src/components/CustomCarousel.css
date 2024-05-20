@@ -1,0 +1,47 @@
+.v-carousel-container{
+    z-index: 999;
+    width: 50%;
+    height: 68%;
+    overflow: hidden;
+    right: 18%;
+    bottom: 22%;
+    position: absolute;
+}
+.v-carousel-images{
+    display: flex;
+    transition: transform 0.3s ease;
+    cursor: grab;
+    /* margin-left: 16px; */
+    /* background-color: red; */
+    display: flex;
+    /* gap: 2px; */
+    flex-direction: column;
+    width: 100%;
+    /* height: 100%; */
+
+}
+.image{
+    /* height: auto; */
+    /* width: 100%; */
+    /* user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    position: absolute;
+    top: 2%;
+    right:0%;
+    width: 100%;
+    height: 96%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; */
+    /* background-color: red; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 467px; /* Adjust this value based on your image size */
+
+}
