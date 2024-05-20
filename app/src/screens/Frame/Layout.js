@@ -249,7 +249,8 @@ function Layout() {
                sessionStorage.setItem('selectedLayout', JSON.stringify(selectedLayouts));
                // sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
           
-               navigate('/payment');
+               // navigate('/payment');
+               navigate('/payment-number');
           }
      }
 

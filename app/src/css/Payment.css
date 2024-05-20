@@ -300,6 +300,7 @@
 
 /** Result **/
 .payment-number-container{
+   
      position: relative;
      width: 100vw;
      /* Full width of the viewport */
@@ -426,4 +427,10 @@
      position: absolute;
      text-align: center;
      /* left: 0%;   */
+}
+.confirm-layout-button{
+     position: absolute;
+     left: 41%;
+     /* background-color: teal; */
+
 }

@@ -10,6 +10,8 @@ import minusDefault from '../../assets/Common/minus-default.png';
 import minusPressed from '../../assets/Common/minus-pressed.png';
 import plusDefault from '../../assets/Common/plus-default.png';
 import plusPressed from '../../assets/Common/plus-pressed.png';
+import confirmDefault from '../../assets/Common/confirm-default.png';
+import confirmPressed from '../../assets/Common/confirm-pressed.png';
 
 import goback_en from '../../assets/Common/goback.png';
 import goback_en_hover from '../../assets/Common/gobackhover.png';
@@ -18,6 +20,13 @@ import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
 import goback_vn from '../../assets/Common/vn/goback.png';
 import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
 import { useNavigate } from 'react-router-dom';
+// Confirm
+import confirm_en from '../../assets/Frame/Layout/confirm.png';
+import confirm_en_hover from '../../assets/Frame/Layout/confirm_click.png';
+import confirm_kr from '../../assets/Frame/Layout/Confirm/kr/confirm.png';
+import confirm_kr_hover from '../../assets/Frame/Layout/Confirm/kr/confirm_click.png';
+import confirm_vn from '../../assets/Frame/Layout/Confirm/vn/confirm.png';
+import confirm_vn_hover from '../../assets/Frame/Layout/Confirm/vn/confirm_click.png';
 
 function PaymentNumber(props) {
     const [background, setBackground] = useState(background_en);
@@ -27,6 +36,10 @@ function PaymentNumber(props) {
     const [goBackBg, setGoBackBg] = useState([]);
     const [language, setLanguage] = useState(null);
     const [check,setCheck]=useState(false)
+    const [confirmButton, setConfirmButton] = useState(confirm_en);
+    const [confirmHoverButton, setConfirmHoverButton] = useState(confirm_en_hover);
+    const [confirmClick, setConfirmClick] = useState(false);
+    const [confirmUrl,setConfirmUrl]=useState(confirmDefault)
     const navigate=useNavigate()
     const hoverGoBackBtn = (goBackBG) => {
         if (goBackBG === 'ko') {
@@ -44,12 +57,40 @@ function PaymentNumber(props) {
       const onCheck=()=>{
         setCheck(p=>!p)
       }
-      const onAdd=()=>{
-        setPhotoNum(p=>p+1)
-      }
-      const onMinus=()=>{
-        setPhotoNum(p=>p-1)
-      }
+      const onAdd = () => {
+        setPhotoNum(p => (p < 10 ? p + 1 : p));
+    };
+
+    const onMinus = () => {
+        setPhotoNum(p => (p > 2 ? p - 1 : p));
+    };
+      const goToPayment = () => {  
+         
+        // if (confirmClick === confirmButton) {
+
+          
+             navigate('/payment');
+            //  navigate('/payment-number');
+        // }
+   }
+const onMouseConfirmEnter=()=>{
+  setConfirmUrl(confirmPressed)
+}
+const onMouseConfirmLeave=()=>{
+  setConfirmUrl(confirmDefault)
+}
+const onMouseMinusEnter=()=>{
+  setMinusBtn(minusPressed)
+}
+const onMouseMinusLeave=()=>{
+  setMinusBtn(minusDefault)
+}
+const onMousePlusEnter=()=>{
+  setPlusBtn(plusPressed)
+}
+const onMousePlusLeave=()=>{
+  setPlusBtn(plusDefault)
+}
     return (
         <div
         className='payment-number-container'
@@ -62,9 +103,14 @@ function PaymentNumber(props) {
         >
  <div className="minus-default"  style={{ backgroundImage: `url(${minusBtn})` }} 
  onClick={onMinus}
+ onMouseEnter={onMouseMinusEnter}
+                    onMouseLeave={onMouseMinusLeave}
  />
  <div className="plus-default"  style={{ backgroundImage: `url(${plusBtn})` }}
  onClick={onAdd}
+
+ onMouseEnter={onMousePlusEnter} 
+ onMouseLeave={onMousePlusLeave}
  />
  <div className="num-field"  style={{ backgroundImage: `url(${numField})` }} >
     <div
@@ -87,6 +133,13 @@ function PaymentNumber(props) {
     />}
  </div>
         </div>
+        <div
+                    className="confirm-layout-button"
+                    style={{ backgroundImage: `url(${confirmUrl})` }}
+                    onClick={goToPayment}
+                    onMouseEnter={onMouseConfirmEnter}
+                    onMouseLeave={onMouseConfirmLeave}
+               ></div>
         </div>
     );
 }
