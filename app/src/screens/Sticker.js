@@ -63,7 +63,8 @@ import print_kr from '../assets/Sticker/kr/print-default.png';
 import print_kr_click from '../assets/Sticker/kr/print-pressed.png';
 import print_vn from '../assets/Sticker/vn/print-default.png';
 import print_vn_click from '../assets/Sticker/vn/print-pressed.png';
-
+//frame나오는 공간
+import frame_box from '../assets/Sticker/frame_box.png';
 
 function Filter() {
      const { t } = useTranslation();
@@ -591,12 +592,24 @@ function Filter() {
 
 
                <div className="left-sticker">
-                    {/* <img
+               <div
+       className='frame-box'
+                          
+                    style={{
+                         // backgroundColor:"red",
+                         // overflowY:"hidden",
+                         backgroundImage: `url(${frame_box})`
+                    }}
+                            />
+                    <div
                             
-                            width={"300px"}
-                            height={"300px"}
-                            src={myBackground}
-                            /> */}
+                            className='selected-frame'
+                            style={{
+                              // backgroundColor:"red",
+                              // overflowY:"hidden",
+                              backgroundImage: `url(${myBackground})`
+                         }}
+                            />
                     <Stage
                          width={1200}
                          height={1000}

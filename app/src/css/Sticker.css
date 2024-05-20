@@ -72,6 +72,26 @@
      background-position: center;
 }
 
+.frame-box {
+     position: absolute;
+     top: -1.6%;
+     right:13%;
+     width: 60%;
+     height: 91%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+.selected-frame{
+     position: absolute;
+     top: 4%;
+     right:13%;
+     width: 60%;
+     height: 80%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
 .sticker-line {
      display: flex;
      gap: 10px;

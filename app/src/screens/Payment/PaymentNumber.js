@@ -134,7 +134,7 @@ const onMousePlusLeave=()=>{
  </div>
         </div>
         <div
-                    className="confirm-layout-button"
+                    className="payment-number-confirm-layout-button"
                     style={{ backgroundImage: `url(${confirmUrl})` }}
                     onClick={goToPayment}
                     onMouseEnter={onMouseConfirmEnter}

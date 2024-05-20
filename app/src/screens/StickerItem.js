@@ -120,7 +120,7 @@ console.log("이미지에 아이디?",image)
                 />
             {/* // )} */}
             {/* {showDeleteButton && !isDragging && ( */}
-                <KonvaImage
+                {/* <KonvaImage
             //    onClick={onSelect}
             //    onTap={onSelect}
                     image={resizeImgae}
@@ -128,13 +128,13 @@ console.log("이미지에 아이디?",image)
                     height={25}
                     offsetY={-stickerHeight/ 2 - 25 - 16.5}
                     offsetX={stickerWidth / 2 - 25 - 16.5}
-                />
+                /> */}
                    {isSelected && (
         <Transformer
         keepRatio={true}
        
           ref={trRef}
-         anchorStroke="transparent"
+        //  anchorStroke="transparent"
           enabledAnchors={[ 'bottom-left']}
         //  anchorSize={0}
         // anchorFill="none"
