@@ -77,6 +77,7 @@ function Filter() {
      const [selectedPhotos, setSelectedPhotos] = useState([]);
      const [filterEffect, setFilterEffect] = useState(null);
      const [myBackgrounds, setMyBackgrounds] = useState([]);
+     const bgLength=myBackgrounds.length
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
@@ -97,6 +98,7 @@ function Filter() {
 
      const [goBackButton, setGoBackButton] = useState(goback_en);
      const [clickedButton, setClickedButton] = useState(false);
+     const [stickerDrag,setStickerDrag]=useState(false)
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
@@ -105,7 +107,7 @@ function Filter() {
      const [selectedCategory, setSelectedCategory] = useState('MOOD');
 
      const stageRef = useRef(null);
-
+     const [stageRefs,setStageRefs]=useState([])
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
      };
@@ -159,6 +161,8 @@ function Filter() {
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                // setMyBackground(parsedSelectedLayout.photo);
                setMyBackgrounds(parsedSelectedLayout.map(it=>it.photo_full));
+               // setStageRefs()
+               // setImages(parsedSelectedLayout.map(b=>[]))
                // background.src=parsedSelectedLayout.photo_full
                // setSrc(parsedSelectedLayout.photo_full)
           }
@@ -356,7 +360,7 @@ function Filter() {
           }
      }
 
-     const addStickerToPanel = ({ src, width, x, y }) => {
+     const addStickerToPanel = ({bgIdx, src, width, x, y }) => {
           setImages((currentImages) => [
                ...currentImages,
                {
@@ -588,13 +592,93 @@ function Filter() {
               }
           }
       };
+      const carouselRef = useRef(null);
+      const [isDown, setIsDown] = useState(false);
+      const [startY, setStartY] = useState(0);
+      const [scrollTop, setScrollTop] = useState(0);
+  
+      useEffect(() => {
+          console.log("스티커 드래그 in useeffect",stickerDrag)
+          const carousel = carouselRef.current;
+  const dragging=stickerDrag
+          const handleMouseDown = (e) => {
+               // if (dragging)return
+               console.log(">>>마우스 다운",dragging)
+              setIsDown(true);
+              if (carousel) {
+               if (stickerDrag)return
+                  setStartY(e.pageY - carousel.offsetTop);
+                  setScrollTop(carousel.scrollTop);
+              }
+          };
+  
+          const handleMouseLeave = () => {
+               // if (stickerDrag)return
+               console.log(">>>마우스 리브")
+              setIsDown(false);
+          };
+  
+          const handleMouseUp = () => {
+               // if (stickerDrag)return
+               console.log(">>>마우스 업")
+              setIsDown(false);
+              snapToClosestItem();
+          };
+  
+          const handleMouseMove = (e) => {
+               // return;
+               // if (stickerMoving)return;
+               if (dragging)return
+               console.log(">>>마우스 무브",dragging)
+              if (!isDown) return;
+              e.preventDefault();
+              if (carousel) {
+                  const y = e.pageY - carousel.offsetTop;
+                  const walk = (y - startY) * 3; // Scroll speed
+                  carousel.scrollTop = scrollTop - walk;
+              }
+          };
+  
+          const snapToClosestItem = () => {
+              if (!carousel) return;
+              const itemHeight = carousel.querySelector('.image').offsetHeight;
+              const scrollY = carousel.scrollTop;
+              const index = Math.round(scrollY / itemHeight);
+              carousel.scrollTo({ top: index * itemHeight, behavior: 'smooth' });
+          };
+  
+          if (carousel) {
+              carousel.addEventListener('mousedown', handleMouseDown);
+              carousel.addEventListener('mouseleave', handleMouseLeave);
+              carousel.addEventListener('mouseup', handleMouseUp);
+              carousel.addEventListener('mousemove', handleMouseMove);
+          }
+  
+          return () => {
+              if (carousel) {
+                  carousel.removeEventListener('mousedown', handleMouseDown);
+                  carousel.removeEventListener('mouseleave', handleMouseLeave);
+                  carousel.removeEventListener('mouseup', handleMouseUp);
+                  carousel.removeEventListener('mousemove', handleMouseMove);
+              }
+          };
+      }, [isDown, startY, scrollTop,stickerDrag]);
+    
+     useEffect(() => {
+  // add or remove refs
+  setStageRefs((refs) =>
+    Array(bgLength)
+      .fill()
+      .map((_, i) => refs[i] || createRef()),
+  );
+
+}, [bgLength]);  
+console.log("스티커 드래그",stickerDrag)
      return (
-          <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
-               <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
-
-
-               <div className="left-sticker">
-               <div
+<div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
+<div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
+<div className="left-sticker">
+<div
        className='frame-box'
                           
                     style={{
@@ -603,40 +687,100 @@ function Filter() {
                          backgroundImage: `url(${frame_box})`
                     }}
                             />
-                            <VerticalCustomCarousel
-
-                            images={myBackgrounds}
-                            />
-                   
-                    <Stage
-                         width={1200}
-                         height={1000}
-                         onClick={handleCanvasClick}
-                         onTap={handleCanvasClick}
-                         className="konva-image"
-                         onMouseDown={checkDeselect}
-                         onTouchStart={checkDeselect}
-                         ref={stageRef}
+  <div className='v-carousel-container' ref={carouselRef}>
+            <div className='v-carousel-images'>
+            {myBackgrounds.map((src, index) => (
+                    <div
+                        className='image'
+                        key={index}
+                        style={{
+                            backgroundImage: `url(${src})`
+                        }}
                     >
-                         <Layer
-                         
-                         >
+                      <Stage
+     width={1200}
+     height={1000}
+     onClick={handleCanvasClick}
+     onTap={handleCanvasClick}
+     className="konva-image"
+     onMouseDown={checkDeselect}
+     onTouchStart={checkDeselect}
+     ref={stageRefs[index]}
+>
+     <Layer>
+          <KonvaImage
+               image={background}
+               height={1200}
+               width={1000}
+               id="backgroundImage"
+          />
+          {images.map((image, i) => {
+               return (
+                    <StickerItem
+                    setStickerDrag={setStickerDrag}
+                    onSelect={()=>{console.log("스티커 클릭")}}
 
-                              <KonvaImage
-                              
-                                   image={background}
-                                   height={1000}
-                                   width={1200}
-                                   id="backgroundImage"
-                                   
-                              />
+                         onDelete={() => {
+                              const newImages = [...images];
+                              newImages.splice(i, 1);
+                              setImages(newImages);
+                         }}
+                         onDragEnd={(event) => {
+                              image.x = event.target.x();
+                              image.y = event.target.y();
+                         }}
+                         key={i}
+                         image={image}
+                         shapeProps={image}
+                    />
+               );
+          })}
+     </Layer>
+</Stage>
+                    
+                    </div>    ))}
+       </div></div>
+  {/* <Stage
+     width={1200}
+     height={1000}
+     onClick={handleCanvasClick}
+     onTap={handleCanvasClick}
+     className="konva-image"
+     onMouseDown={checkDeselect}
+     onTouchStart={checkDeselect}
+     ref={stageRefs[0]}
+>
+     <Layer>
+          <KonvaImage
+               image={background}
+               height={1200}
+               width={1000}
+               id="backgroundImage"
+          />
+          {images.map((image, i) => {
+               return (
+                    <StickerItem
+                         onDelete={() => {
+                              const newImages = [...images];
+                              newImages.splice(i, 1);
+                              setImages(newImages);
+                         }}
+                         onDragEnd={(event) => {
+                              image.x = event.target.x();
+                              image.y = event.target.y();
+                         }}
+                         key={i}
+                         image={image}
+                         shapeProps={image}
+                    />
+               );
+          })}
+     </Layer>
+</Stage> */}
+  
+</div>
 
-                           
-
-                         </Layer>
-                    </Stage>
-               </div>
-               <div className="middle-sticker"
+<div className="middle-sticker"
                     draggable={true}
                     onDragStart={onDragStart}
                     onDrag={() => {
@@ -662,8 +806,8 @@ function Filter() {
                                              addStickerToPanel({
                                                   src: mySticker.photo,
                                                   width: 100,
-                                                  x: 500,
-                                                  y: 500
+                                                  x: 30,//500,
+                                                  y: 30//500
                                              });
                                         }}
                                    >
@@ -675,7 +819,7 @@ function Filter() {
                          </div>
                     ))}
                </div>
-               <div className="right-sticker" style={{ backgroundImage: `url(${sticker_taskbar})` }}>
+<div className="right-sticker" style={{ backgroundImage: `url(${sticker_taskbar})` }}>
                     <div className="sticker-category">
                          <div className="sticker-category-item" style={{ backgroundImage: `url(${mood})` }} onClick={() => filterStickerByCategory('MOOD')} onMouseEnter={() => hoverStickerButton('mood')} onMouseLeave={() => hoverStickerButton('mood')}></div>
                          <div className="sticker-category-item" style={{ backgroundImage: `url(${lovely})` }} onClick={() => filterStickerByCategory('LOVELY')} onMouseEnter={() => hoverStickerButton('lovely')} onMouseLeave={() => hoverStickerButton('lovely')}></div>
@@ -684,7 +828,7 @@ function Filter() {
                     </div>
                     <div className="sticker-print-btn" style={{ backgroundImage: `url(${printButton})` }} onClick={printFrameWithSticker} onMouseEnter={hoverPrintButton} onMouseLeave={hoverPrintButton}></div>
                </div>
-          </div>
+</div>
      );
 }
 

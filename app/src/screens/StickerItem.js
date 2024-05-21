@@ -5,7 +5,9 @@ import { useHoverDirty, useLongPress } from 'react-use';
 import cancelImage from "../assets/Sticker/items/cancel.png";
 import scaleImage from "../assets/Sticker/items/scale.png";
 
-export const StickerItem = ({shapeProps, isSelected, onChange,onSelect,image, onDelete, onDragEnd,onResize }) => {
+export const StickerItem = ({
+  setStickerDrag,
+  shapeProps, isSelected, onChange,onSelect,image, onDelete, onDragEnd,onResize }) => {
     const imageRef = useRef(null);
     const isHovered = useHoverDirty(imageRef);
     const [stickerImage] = useImage(image.src);
@@ -19,19 +21,26 @@ export const StickerItem = ({shapeProps, isSelected, onChange,onSelect,image, on
     useEffect(() => {
         if (isSelected) {
           // we need to attach transformer manually
+          console.log("스티커 셀렉")
+          // setStickerMoving(true)
           trRef.current.nodes([imageRef.current]);
           trRef.current.getLayer().batchDraw();
         }
       }, [isSelected]);
     const onLongPress = () => {
+      setStickerDrag(true)
+      // setStickerDrag(true)
+      console.log("스티커 드래그중")
         setShowDeleteButton(true);
     }
 
     image.resetButtonRef.current = () => {
         setShowDeleteButton(false);
+       
     }
 
     const longPressEvent = useLongPress(onLongPress, {
+      
         delay: 200
     });
     const [isDragging, setIsDragging] = useState(false);
@@ -60,16 +69,22 @@ console.log("이미지에 아이디?",image)
             x={image.x}
             y={image.y}
             
+            onDragStart={()=>{
+              setStickerDrag(true)
+              // setIsDown(false)
+              console.log("스티커 드래그 시작")}}
             // onClick={}
             width={image.width}
-            
+            onMouseEnter={()=>{console.log("스티커에 마우스 올림")}}
             // onDragStart={() => setIsDragging(true)}
             onDragEnd={(event) => {
-                 onChange({
-                    ...shapeProps,
-                    x: event.target.x(),
-                    y: event.target.y(),
-                  });
+              setStickerDrag(false)
+              console.log("스티커 드래그 끝")
+                //  onChange({
+                //     ...shapeProps,
+                //     x: event.target.x(),
+                //     y: event.target.y(),
+                //   });
                 //   setIsDragging(false);
                 // onDragEnd(event);
                
@@ -107,7 +122,7 @@ console.log("이미지에 아이디?",image)
                 image={stickerImage}
                 {...longPressEvent}
                 {...stickerImage}    
-                    
+                
             />   
                
             {/* {showDeleteButton && !isDragging && ( */}

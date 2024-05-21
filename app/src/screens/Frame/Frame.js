@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../../translations/i18n';
@@ -42,7 +42,17 @@ function Frame() {
   const [frameBackground, setFrameBackground] = useState([]);
 
   const [goBackBg, setGoBackBg] = useState([]);
+const src='./choose_frame_layout.wav'
+  // const audioRef = useRef(null);
 
+  useEffect(() => {
+    //음성 재생
+    const audio = new Audio(src); 
+    audio.muted=true
+    audio.play()
+    audio.muted=false
+
+  }, []);
 
   useEffect(() => {
     const storedLanguage = sessionStorage.getItem('language');
@@ -132,6 +142,7 @@ function Frame() {
 
   return (
     <div className='frame-container' style={{ backgroundImage: `url(${frameBackground})` }}>
+        {/* <audio ref={audioRef} src="/choose_frame_layout.wav" controls autoPlay /> */}
       <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
       <div className="topSection">
         <div className="column">

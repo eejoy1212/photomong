@@ -36,6 +36,7 @@ function App() {
         <Route path="/filter" element={<Filter />} />
         <Route path="/sticker" element={<Sticker />} />
         <Route path="/print" element={<Print />} />
+        
       </Routes>
     </Router>
   );

@@ -19,10 +19,17 @@ function App() {
   const [buttonBackground, setButtonBackground] = useState(start_en);
 
   useEffect(() => {
+  //  const src='./lets-start.wav'
+  //   //음성 재생
+  //      const audio = new Audio('./lets-start.wav'); 
+  //      audio.muted=true
+  //      audio.play()
+  //      audio.muted=false
     setLanguage('en');
     sessionStorage.setItem('language', 'en');
     i18n.changeLanguage('en');
     setDisplayLanguage(t(`language.en`));
+   
   }, []);
 
   const handleChangeLanguage = (value) => {
@@ -39,7 +46,16 @@ function App() {
     setShowLangOption(!showLangOption);
   };
 
-  const changeButtonBackground = (lang) => {
+  const changeButtonBackground = (type,lang) => {
+// if (type==="Enter") {
+//   const src = './lets-start.wav';
+//   //음성 재생
+//   const audio = new Audio(src);
+//   audio.muted = true;
+//   audio.play();
+//   audio.muted = false;
+// }
+  
     if (lang === 'en') {
       setButtonBackground(buttonBackground === start_en ? start_click_en : start_en);
     } else if (lang === 'vi') {
@@ -61,7 +77,9 @@ function App() {
           </div>
         }
       </div>
-      <div className="start-button" style={{ backgroundImage: `url(${buttonBackground})` }} onMouseEnter={() => changeButtonBackground(language)} onMouseLeave={() => changeButtonBackground(language)} onClick={() => navigate('/frame')}></div>
+      <div className="start-button" style={{ backgroundImage: `url(${buttonBackground})` }} onMouseEnter={() => changeButtonBackground('Enter',language)} onMouseLeave={() => changeButtonBackground('Leave',language)} onClick={() =>
+
+        navigate('/frame')}></div>
     </div>
   );
 }

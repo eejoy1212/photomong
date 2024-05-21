@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './CustomCarousel.css';
+import './StickerCarousel.css';
 
-const VerticalCustomCarousel = ({ images,stage }) => {
+const StickerCarousel = ({ stickers,backgroundImage }) => {
     const carouselRef = useRef(null);
     const [isDown, setIsDown] = useState(false);
     const [startY, setStartY] = useState(0);
@@ -39,7 +39,7 @@ const VerticalCustomCarousel = ({ images,stage }) => {
 
         const snapToClosestItem = () => {
             if (!carousel) return;
-            const itemHeight = carousel.querySelector('.image').offsetHeight;
+            const itemHeight = carousel.querySelector('.sticker-lines').offsetHeight??1;
             const scrollY = carousel.scrollTop;
             const index = Math.round(scrollY / itemHeight);
             carousel.scrollTo({ top: index * itemHeight, behavior: 'smooth' });
@@ -63,23 +63,24 @@ const VerticalCustomCarousel = ({ images,stage }) => {
     }, [isDown, startY, scrollTop]);
 
     return (
-        <div className='v-carousel-container' ref={carouselRef}>
-            <div className='v-carousel-images'>
-                {images.map((src, index) => (
+        <div className='sticker-carousel-container' ref={carouselRef}
+        
+        style={{
+            // backgroundColor:"red",
+            // overflowY:"hidden",
+            backgroundImage: `url(${backgroundImage})`
+       }}
+        >
+            <div className='sticker-carousel-lines'>
+                {stickers.map((lines, index) => (
                     <div
-                        className='image'
-                        key={index}
-                        style={{
-                            backgroundImage: `url(${src})`
-                        }}
-                    >
-                        {stage}
-                    
-                    </div>
+                        className='sticker-lines'
+                      
+                    >{lines}</div>
                 ))}
             </div>
         </div>
     );
 };
 
-export default VerticalCustomCarousel;
+export default StickerCarousel;
