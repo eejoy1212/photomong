@@ -86,7 +86,7 @@ console.log("이미지에 아이디?",image)
                 //     y: event.target.y(),
                 //   });
                 //   setIsDragging(false);
-                // onDragEnd(event);
+                onDragEnd(event);
                
             }}
             onTransformEnd={(e) => {

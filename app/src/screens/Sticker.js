@@ -90,6 +90,7 @@ function Filter() {
      const [scrollIdx, setScrollIdx] = useState(0)
      const [dragStartY, setDragStartY] = useState(0);
      const [bgIdx,setBgIdx]=useState(0)
+     const [stickerImgs,setStickerImgs]=useState([])
      // Sticker
      const [mood, setMood] = useState(null);
      const [lovely, setLovely] = useState(null);
@@ -162,11 +163,14 @@ function Filter() {
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                // setMyBackground(parsedSelectedLayout.photo);
                setMyBackgrounds(parsedSelectedLayout.map(it=>it.photo_full));
+
                const imgs=[]
           for (let i = 0; i < parsedSelectedLayout.length; i++) {
              imgs.push([])
                
           }
+          setImages(imgs)
+          setStickerImgs(imgs)
                // setStageRefs()
                // setImages(parsedSelectedLayout.map(b=>[]))
                // background.src=parsedSelectedLayout.photo_full
@@ -366,45 +370,84 @@ function Filter() {
           }
      }
 
-     const addStickerToPanel = ({bgIdx, src, width, x, y }) => {
-          console.log("스티커 올라갈 프레임 인덱스",bgIdx,images)
-          const item={
-               width,
-               x,
-               y,
-               src,
-               resetButtonRef: createRef()
-          }
-          setImages((currentImages) => [
-               ...currentImages,
-               {    bgIdx,
-                    width,
-                    x,
-                    y,
-                    src,
-                    resetButtonRef: createRef()
-               }
-               // {bgIdx:item}
-          ]);
-     };
-
-     const resetAllButtons = useCallback(() => {
-          images.forEach((image) => {
-               if (image.resetButtonRef.current) {
-                    image.resetButtonRef.current();
-               }
+     // const addStickerToPanel = ({bgIdx, src, width, x, y }) => {
+     //      console.log("스티커 올라갈 프레임 인덱스",bgIdx,images)
+     //      const item={
+     //           width,
+     //           x,
+     //           y,
+     //           src,
+     //           resetButtonRef: createRef()
+     //      }
+     //      setImages((currentImages) => [
+     //           ...currentImages,
+     //           {    bgIdx,
+     //                width,
+     //                x,
+     //                y,
+     //                src,
+     //                resetButtonRef: createRef()
+     //           }
+     //           // {bgIdx:item}
+     //      ]);
+     // };
+     const addStickerToPanel = ({ bgIdx, src, width, x, y }) => {
+          console.log("스티커 올라갈 프레임 인덱스", bgIdx, images);
+      
+          const item = {
+              width,
+              x,
+              y,
+              src,
+              resetButtonRef: createRef()
+          };
+      
+          setImages((currentImages) => {
+              // Create a new array to avoid mutating the state directly
+              const newImages = currentImages.map((subList, index) => {
+                  if (index === bgIdx) {
+                      return [...subList, item];
+                  }
+                  return subList;
+              });
+      
+              return newImages;
           });
-     }, [images]);
+      };
+     // const resetAllButtons = useCallback(() => {
+     //      images.forEach((image) => {
+     //           if (image.resetButtonRef.current) {
+     //                image.resetButtonRef.current();
+     //           }
+     //      });
+     // }, [images]);
 
-     const handleCanvasClick = useCallback(
+     // const handleCanvasClick = useCallback(
+     //      (event) => {
+     //           if (event.target.attrs.id === "backgroundImage") {
+     //                resetAllButtons();
+     //           }
+     //      },
+     //      [resetAllButtons]
+     // );
+     const resetAllButtons = useCallback(() => {
+          images.forEach((subList) => {
+              subList.forEach((image) => {
+                  if (image.resetButtonRef.current) {
+                      image.resetButtonRef.current();
+                  }
+              });
+          });
+      }, [images]);
+      
+      const handleCanvasClick = useCallback(
           (event) => {
-               if (event.target.attrs.id === "backgroundImage") {
-                    resetAllButtons();
-               }
+              if (event.target.attrs.id === "backgroundImage") {
+                  resetAllButtons();
+              }
           },
           [resetAllButtons]
-     );
-
+      );
      const checkDeselect = (e) => {
           const clickedOnEmpty = e.target === e.target.getStage();
           if (clickedOnEmpty) {
@@ -684,6 +727,7 @@ function Filter() {
     
      useEffect(() => {
   // add or remove refs
+
   setStageRefs((refs) =>
     Array(bgLength)
       .fill()
@@ -692,7 +736,7 @@ function Filter() {
 
 
 }, [bgLength]);  
-console.log("스티커 배경 왜 한개더생겨",myBackgrounds,stageRefs)
+console.log("이미지 위치",images[1])
      return (
 <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
 <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
@@ -733,7 +777,30 @@ console.log("스티커 배경 왜 한개더생겨",myBackgrounds,stageRefs)
                width={1000}
                id="backgroundImage"
           />
-          {images.filter(it=>it.bgIdx===bgIdx).map((image, i) => {
+          {/* {images.map((image, i) => {
+               
+               return (
+                    <StickerItem
+                    setStickerDrag={setStickerDrag}
+                    onSelect={()=>{console.log("스티커 클릭")}}
+
+                         onDelete={() => {
+                              const newImages = [...images];
+                              newImages.splice(i, 1);
+                              setImages(newImages);
+                         }}
+                         onDragEnd={(event) => {
+                              image.x = event.target.x();
+                              image.y = event.target.y();
+                         }}
+                         key={i}
+                         image={image}
+                         shapeProps={image}
+                    />
+               );
+          })} */}
+           {images[bgIdx]===undefined?<></>:images[bgIdx].map((image, i) => {
+               
                return (
                     <StickerItem
                     setStickerDrag={setStickerDrag}
