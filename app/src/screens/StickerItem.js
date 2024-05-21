@@ -28,7 +28,7 @@ export const StickerItem = ({
         }
       }, [isSelected]);
     const onLongPress = () => {
-      setStickerDrag(true)
+      // setStickerDrag(true)
       // setStickerDrag(true)
       console.log("스티커 드래그중")
         setShowDeleteButton(true);

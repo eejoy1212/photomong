@@ -89,6 +89,7 @@ function Filter() {
      //스크롤 인덱스
      const [scrollIdx, setScrollIdx] = useState(0)
      const [dragStartY, setDragStartY] = useState(0);
+     const [bgIdx,setBgIdx]=useState(0)
      // Sticker
      const [mood, setMood] = useState(null);
      const [lovely, setLovely] = useState(null);
@@ -161,6 +162,11 @@ function Filter() {
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                // setMyBackground(parsedSelectedLayout.photo);
                setMyBackgrounds(parsedSelectedLayout.map(it=>it.photo_full));
+               const imgs=[]
+          for (let i = 0; i < parsedSelectedLayout.length; i++) {
+             imgs.push([])
+               
+          }
                // setStageRefs()
                // setImages(parsedSelectedLayout.map(b=>[]))
                // background.src=parsedSelectedLayout.photo_full
@@ -361,15 +367,24 @@ function Filter() {
      }
 
      const addStickerToPanel = ({bgIdx, src, width, x, y }) => {
+          console.log("스티커 올라갈 프레임 인덱스",bgIdx,images)
+          const item={
+               width,
+               x,
+               y,
+               src,
+               resetButtonRef: createRef()
+          }
           setImages((currentImages) => [
                ...currentImages,
-               {
+               {    bgIdx,
                     width,
                     x,
                     y,
                     src,
                     resetButtonRef: createRef()
                }
+               // {bgIdx:item}
           ]);
      };
 
@@ -629,10 +644,11 @@ function Filter() {
                // return;
                // if (stickerMoving)return;
                if (dragging)return
-               console.log(">>>마우스 무브",dragging)
+              
               if (!isDown) return;
               e.preventDefault();
-              if (carousel) {
+              if (carousel) { 
+       
                   const y = e.pageY - carousel.offsetTop;
                   const walk = (y - startY) * 3; // Scroll speed
                   carousel.scrollTop = scrollTop - walk;
@@ -643,7 +659,9 @@ function Filter() {
               if (!carousel) return;
               const itemHeight = carousel.querySelector('.image').offsetHeight;
               const scrollY = carousel.scrollTop;
-              const index = Math.round(scrollY / itemHeight);
+              const index = Math.round(scrollY / itemHeight);  
+                    console.log(">>>백그라운드 인덱스",index)
+                    setBgIdx(index)
               carousel.scrollTo({ top: index * itemHeight, behavior: 'smooth' });
           };
   
@@ -672,8 +690,9 @@ function Filter() {
       .map((_, i) => refs[i] || createRef()),
   );
 
+
 }, [bgLength]);  
-console.log("스티커 드래그",stickerDrag)
+console.log("스티커 배경 왜 한개더생겨",myBackgrounds,stageRefs)
      return (
 <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
 <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
@@ -714,7 +733,7 @@ console.log("스티커 드래그",stickerDrag)
                width={1000}
                id="backgroundImage"
           />
-          {images.map((image, i) => {
+          {images.filter(it=>it.bgIdx===bgIdx).map((image, i) => {
                return (
                     <StickerItem
                     setStickerDrag={setStickerDrag}
@@ -804,6 +823,7 @@ console.log("스티커 드래그",stickerDrag)
                                         className="sticker"
                                         onClick={() => {
                                              addStickerToPanel({
+                                                  bgIdx:bgIdx,
                                                   src: mySticker.photo,
                                                   width: 100,
                                                   x: 30,//500,
