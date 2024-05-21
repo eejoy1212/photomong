@@ -92,6 +92,7 @@ function Filter() {
      const [bgIdx,setBgIdx]=useState(0)
      const [stickerImgs,setStickerImgs]=useState([])
      // Sticker
+     const [isSel,setIsSel]=useState(false)
      const [mood, setMood] = useState(null);
      const [lovely, setLovely] = useState(null);
      const [cartoon, setCartoon] = useState(null);
@@ -804,7 +805,9 @@ console.log("이미지 위치",images[1])
                return (
                     <StickerItem
                     setStickerDrag={setStickerDrag}
-                    onSelect={()=>{console.log("스티커 클릭")}}
+                    onSelect={()=>{
+                         
+                         console.log("스티커 클릭")}}
 
                          onDelete={() => {
                               const newImages = [...images];

@@ -4,10 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-/public/photo_covers/*
-/public/photo_saved/*
-/public/photos/*
-/public/sticker/*
+# /public/photo_covers/*
+# /public/photo_saved/*
+# /public/photos/*
+# /public/sticker/*
 
 # testing
 /coverage
