@@ -737,7 +737,7 @@ function Filter() {
 
 
 }, [bgLength]);  
-console.log("이미지 위치",images[1])
+console.log("이미지 리사이징 중",stickerDrag)
      return (
 <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
 <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
@@ -804,9 +804,14 @@ console.log("이미지 위치",images[1])
                
                return (
                     <StickerItem
+                    isSelected={isSel}
                     setStickerDrag={setStickerDrag}
+                    onTransform={()=>{
+                         console.log("이미지 리사이징 중")
+                    }}
                     onSelect={()=>{
-                         
+                         // setStickerDrag(true)
+                         setIsSel(p=>!p)
                          console.log("스티커 클릭")}}
 
                          onDelete={() => {

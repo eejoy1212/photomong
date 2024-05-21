@@ -7,7 +7,7 @@ import scaleImage from "../assets/Sticker/items/scale.png";
 
 export const StickerItem = ({
   setStickerDrag,
-  shapeProps, isSelected, onChange,onSelect,image, onDelete, onDragEnd,onResize }) => {
+  shapeProps, isSelected, onChange,onSelect,image, onDelete, onDragEnd,onResize,onTransform }) => {
     const imageRef = useRef(null);
     const isHovered = useHoverDirty(imageRef);
     const [stickerImage] = useImage(image.src);
@@ -57,8 +57,8 @@ export const StickerItem = ({
             }, 2000);
         }
     }, [isHovered]);
-console.log("이미지에 아이디?",image)
 
+    
     return (
         <Group
         
@@ -68,7 +68,7 @@ console.log("이미지에 아이디?",image)
             draggable
             x={image.x}
             y={image.y}
-            
+            onTransform={onTransform}
             onDragStart={()=>{
               setStickerDrag(true)
               // setIsDown(false)
@@ -150,7 +150,13 @@ console.log("이미지에 아이디?",image)
                    {isSelected && (
         <Transformer
         keepRatio={true}
-       
+        onMouseOut={()=>{
+          setStickerDrag(false);
+          console.log("transformer out")
+        }}
+       onDragStart={()=>{
+      
+       }}
           ref={trRef}
         //  anchorStroke="transparent"
           enabledAnchors={[ 'bottom-left']}
@@ -159,11 +165,32 @@ console.log("이미지에 아이디?",image)
         borderDash={[6,6]}
         // enabledAnchors={false}
           flipEnabled={false}
-          boundBoxFunc={(oldBox, newBox) => {
+          onDragEnd={()=>{
+            setStickerDrag(false)
+          }}
+          // boundBoxFunc={(oldBox, newBox) => {  
+  
+          //   // limit resize
+          //   if (Math.abs(newBox.width) < 25 || Math.abs(newBox.height) < 25) {
+           
+          //     return oldBox;
+          //   }
+          //   return newBox;
+          // }}
+          boundBoxFunc={(oldBox, newBox) => {  
+            setStickerDrag(true);
+            console.log("transformer drag start");
+        
             // limit resize
             if (Math.abs(newBox.width) < 25 || Math.abs(newBox.height) < 25) {
+              // setStickerDrag(false);
+              // requestAnimationFrame(() => setStickerDrag(false));
+              console.log("transformer drag end00");
               return oldBox;
             }
+            console.log("transformer drag end11");
+            // setStickerDrag(false);
+            // requestAnimationFrame(() => setStickerDrag(false));
             return newBox;
           }}
         />
