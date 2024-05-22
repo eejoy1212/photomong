@@ -804,6 +804,7 @@ console.log("이미지 리사이징 중",stickerDrag)
                
                return (
                     <StickerItem
+                    isStickerDrag={stickerDrag}
                     isSelected={isSel}
                     setStickerDrag={setStickerDrag}
                     onTransform={()=>{
@@ -822,6 +823,9 @@ console.log("이미지 리사이징 중",stickerDrag)
                          onDragEnd={(event) => {
                               image.x = event.target.x();
                               image.y = event.target.y();
+                         }}
+                         onChange={(x,y,width,height)=>{
+                              console.log("리사이즈 한 너비 / 높이",width,height)
                          }}
                          key={i}
                          image={image}

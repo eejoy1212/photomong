@@ -4,37 +4,62 @@ import { Image as KonvaImage, Group, Rect, Transformer, Layer, Shape } from 'rea
 import { useHoverDirty, useLongPress } from 'react-use';
 import cancelImage from "../assets/Sticker/items/cancel.png";
 import scaleImage from "../assets/Sticker/items/scale.png";
+import Konva from "konva";
 
 export const StickerItem = ({
+isStickerDrag,
   setStickerDrag,
   shapeProps, isSelected, onChange,onSelect,image, onDelete, onDragEnd,onResize,onTransform }) => {
     const imageRef = useRef(null);
     const isHovered = useHoverDirty(imageRef);
     const [stickerImage] = useImage(image.src);
     const [deleteImage] = useImage(cancelImage);
-    const [resizeImgae] = useImage(scaleImage);
+    const [resizeImgae,resizeImageStatus] = useImage(scaleImage);
     const [showDeleteButton, setShowDeleteButton] = useState(false);    
-
+    const [isDragging, setIsDragging] = useState(false);
     // const shapeRef = useRef();    
+    const [showResize,setShowResize]=useState(false)
     const trRef = useRef();    
-
+   
     useEffect(() => {
+      if (!resizeImgae)return
+      // if (!isHovered)return
         if (isSelected) {
           // we need to attach transformer manually
-          console.log("스티커 셀렉")
           // setStickerMoving(true)
-          trRef.current.nodes([imageRef.current]);
-          trRef.current.getLayer().batchDraw();
+          const tr = trRef.current;
+          tr.nodes([imageRef.current]);
+          var bot = tr.findOne(".bottom-left");
+          const iconCanvas = document.createElement("canvas");
+          iconCanvas.width = bot.width();
+          iconCanvas.height = bot.height();
+          const ctx = iconCanvas.getContext("2d");
+          ctx.fillStyle = "transparent";
+          ctx.fillRect(0, 0, iconCanvas.width, iconCanvas.height);
+          ctx.drawImage(resizeImgae, 0, 0, iconCanvas.width, iconCanvas.height);
+          tr.update = function () {
+            Konva.Transformer.prototype.update.call(tr);
+            var bot = this.findOne(".bottom-left");
+            // disaable fill
+            bot.fill(null);
+            // enable icon
+            bot.fillPatternImage(iconCanvas);
+          };
+    
+          tr.update();
+          console.log("리사이징 앵커", bot)
+          tr.getLayer().batchDraw();
         }
-      }, [isSelected]);
+      }, [isSelected,resizeImgae]);
     const onLongPress = () => {
       // setStickerDrag(true)
       // setStickerDrag(true)
-      console.log("스티커 드래그중")
+      console.log("스티커 드래그중!!!")
         setShowDeleteButton(true);
     }
 
     image.resetButtonRef.current = () => {
+      console.log("스티커 드래그중!!! 끝")
         setShowDeleteButton(false);
        
     }
@@ -43,14 +68,17 @@ export const StickerItem = ({
       
         delay: 200
     });
-    const [isDragging, setIsDragging] = useState(false);
+
 
     const stickerWidth = image.width;
     const stickerHeight = stickerImage ? (image.width * stickerImage.height) / stickerImage.width : 0;
-
+    const aspectRatio = stickerWidth / stickerHeight;
     useEffect(() => {
         if (isHovered) {
+          setTimeout(() => {
             setShowDeleteButton(true);
+        }, 100000);
+            // setShowDeleteButton(true);
         } else {
             setTimeout(() => {
                 setShowDeleteButton(false);
@@ -58,37 +86,50 @@ export const StickerItem = ({
         }
     }, [isHovered]);
 
-    
+   console.log("리사이징 앵커 보이기",showResize)
+   const anchorStyleFunc = (anchor) => {
+    if (anchor.hasName('bottom-left')) {
+      return {
+        fillPatternImage: image,
+        fillPatternOffset: { x: -15, y: -15 },
+        width: 30,
+        height: 30,
+      };
+    }
+    return {};
+  };
     return (
         <Group
         
         // ref={shapeRef}
-        onClick={onSelect}
+        // onClick={onSelect}
         onTap={onSelect}
             draggable
             x={image.x}
             y={image.y}
             onTransform={onTransform}
-            onDragStart={()=>{
+            onDragStart={()=>{setIsDragging(true)
               setStickerDrag(true)
               // setIsDown(false)
               console.log("스티커 드래그 시작")}}
             // onClick={}
             width={image.width}
             onMouseEnter={()=>{console.log("스티커에 마우스 올림")}}
-            // onDragStart={() => setIsDragging(true)}
+          
             onDragEnd={(event) => {
               setStickerDrag(false)
-              console.log("스티커 드래그 끝")
+              console.log("스티커 드래그중!!! 끝")
+              setShowDeleteButton(false)
                 //  onChange({
                 //     ...shapeProps,
                 //     x: event.target.x(),
                 //     y: event.target.y(),
                 //   });
-                //   setIsDragging(false);
+                  setIsDragging(false);
                 onDragEnd(event);
                
             }}
+            
             onTransformEnd={(e) => {
               
                 // transformer is changing scale of the node
@@ -102,6 +143,7 @@ export const StickerItem = ({
                 // we will reset it back
                 node.scaleX(1);
                 node.scaleY(1);
+                console.log("리사이즈 한 너비 높이>>",Math.max(5, node.width() * scaleX),Math.max(node.height() * scaleY))
                 onChange({
                   ...image,
                   x: node.x(),
@@ -122,11 +164,13 @@ export const StickerItem = ({
                 image={stickerImage}
                 {...longPressEvent}
                 {...stickerImage}    
-                
+onClick={onSelect}
+                onMouseLeave={()=>{setShowDeleteButton(false)}}
+                onMouseEnter={()=>{setShowDeleteButton(true)}}
             />   
                
             {/* {showDeleteButton && !isDragging && ( */}
-                <KonvaImage
+              {isSelected  && <KonvaImage
                 
                     onTouchStart={onDelete}
                     onClick={onDelete}
@@ -135,48 +179,31 @@ export const StickerItem = ({
                     height={25}
                     offsetY={stickerHeight/ 2 - 25 - 16.5}
                     offsetX={-stickerWidth / 2 - 50 + 16.5}
-                />
-            {/* // )} */}
-            {/* {showDeleteButton && !isDragging && ( */}
-                {/* <KonvaImage
-            //    onClick={onSelect}
-            //    onTap={onSelect}
-                    image={resizeImgae}
-                    width={25}
-                    height={25}
-                    offsetY={-stickerHeight/ 2 - 25 - 16.5}
-                    offsetX={stickerWidth / 2 - 25 - 16.5}
-                /> */}
-                   {isSelected && (
-        <Transformer
+                />}
+        
+               
+       {isSelected && <Transformer
+       
+rotateEnabled={false}
         keepRatio={true}
+        // onMouseLeave={()=>{setShowDeleteButton(false)}}
+        // onMouseEnter={()=>{setShowDeleteButton(true)}}
         onMouseOut={()=>{
+          // setShowDeleteButton(false)
           setStickerDrag(false);
           console.log("transformer out")
         }}
-       onDragStart={()=>{
-      
-       }}
+   
+
           ref={trRef}
-        //  anchorStroke="transparent"
           enabledAnchors={[ 'bottom-left']}
-        //  anchorSize={0}
-        // anchorFill="none"
+        anchorSize={25}
         borderDash={[6,6]}
-        // enabledAnchors={false}
           flipEnabled={false}
           onDragEnd={()=>{
             setStickerDrag(false)
           }}
-          // boundBoxFunc={(oldBox, newBox) => {  
-  
-          //   // limit resize
-          //   if (Math.abs(newBox.width) < 25 || Math.abs(newBox.height) < 25) {
-           
-          //     return oldBox;
-          //   }
-          //   return newBox;
-          // }}
+          anchorStyleFunc={anchorStyleFunc}
           boundBoxFunc={(oldBox, newBox) => {  
             setStickerDrag(true);
             console.log("transformer drag start");
@@ -188,13 +215,15 @@ export const StickerItem = ({
               console.log("transformer drag end00");
               return oldBox;
             }
-            console.log("transformer drag end11");
+            console.log("transformer drag end11",newBox);
             // setStickerDrag(false);
             // requestAnimationFrame(() => setStickerDrag(false));
             return newBox;
           }}
-        />
-      )}
+        />}
+        
+
+      
                 
             {/* )} */}
         </Group>
