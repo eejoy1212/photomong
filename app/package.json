@@ -56,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+    "proxy": "http://118.33.212.138:5000"
+  
+  
 }

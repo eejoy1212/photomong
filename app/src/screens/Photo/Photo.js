@@ -11,6 +11,8 @@ import frame from '../../assets/Photo/Snap/frame.png';
 import background_en from '../../assets/Photo/Snap/BG.png';
 import background_kr from '../../assets/Photo/Snap/kr/BG.png';
 import background_vn from '../../assets/Photo/Snap/vn/BG.png';
+import axios from 'axios';
+import { axiosInstance, sendCaptureReq } from '../../api/config';
 
 
 function Photo() {
@@ -29,23 +31,31 @@ function Photo() {
 
      const rightCornerDivValue = (photoCount + 1) * (1 / 8);
 
-     const takeSnapshot = () => {
+     const takeSnapshot = async() => {
           setFlash(true);
           const imageSrc = webcamRef.current.getScreenshot();
           const newPhotoArray = [...photos, imageSrc];
           setPhotos(newPhotoArray);
           setPhotoCount((prevCount) => prevCount + 1);
 
-          setTimeout(() => {
-               setFlash(false);
-          }, 100);
+          // setTimeout(() => {
+          //      setFlash(false);
+          // }, 100);
+//1장 찍을 때마다 사진 찍어라
 
+ 
+setTimeout(async () => {      
+      const response=await sendCaptureReq()     
+ console.log("response result>>>",response)  
+//      // setFlash(false);
+}, 5000);
           if (photoCount == 7) {
                const photosWithIds = newPhotoArray.map((photo, index) => ({
                     id: index,
                     url: photo
                }));
                sessionStorage.setItem('photos', JSON.stringify(photosWithIds));
+               //3~5초
                navigate('/photo-choose')
           } else {
                setCountdown(8);
