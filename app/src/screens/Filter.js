@@ -80,6 +80,7 @@ import continue_kr from '../assets/Common/kr/continue.png';
 import continue_kr_hover from '../assets/Common/kr/continue_click.png';
 import continue_vn from '../assets/Common/vn/continue.png';
 import continue_vn_hover from '../assets/Common/vn/continue_click.png';
+import { originAxiosInstance } from '../api/config';
 
 function Filter() {
      const { t } = useTranslation();
@@ -371,7 +372,7 @@ function Filter() {
                const formData = new FormData();
                formData.append('photo', photo_data);
 
-               axios.post(uploadImageUrl, formData, {
+               originAxiosInstance.post(uploadImageUrl, formData, {
                     headers: {
                          'Content-Type': 'multipart/form-data'
                     }

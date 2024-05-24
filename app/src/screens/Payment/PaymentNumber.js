@@ -27,6 +27,7 @@ import confirm_kr from '../../assets/Frame/Layout/Confirm/kr/confirm.png';
 import confirm_kr_hover from '../../assets/Frame/Layout/Confirm/kr/confirm_click.png';
 import confirm_vn from '../../assets/Frame/Layout/Confirm/vn/confirm.png';
 import confirm_vn_hover from '../../assets/Frame/Layout/Confirm/vn/confirm_click.png';
+import { sendDongNum } from '../../api/config';
 
 function PaymentNumber(props) {
     const [background, setBackground] = useState(background_en);
@@ -64,12 +65,13 @@ function PaymentNumber(props) {
     const onMinus = () => {
         setPhotoNum(p => (p > 2 ? p - 1 : p));
     };
-      const goToPayment = () => {  
-         
+      const goToPayment = async(dongNum,checkCoupon) => {  
+         console.log("백앤드로 dongNum 넘어갔나",dongNum)
         // if (confirmClick === confirmButton) {
+const res=await sendDongNum(dongNum,checkCoupon===true?1:0)
 
           
-             navigate('/payment');
+            //  navigate('/payment');
             //  navigate('/payment-number');
         // }
    }
@@ -136,7 +138,7 @@ const onMousePlusLeave=()=>{
         <div
                     className="payment-number-confirm-layout-button"
                     style={{ backgroundImage: `url(${confirmUrl})` }}
-                    onClick={goToPayment}
+                    onClick={(e)=>{goToPayment(photoNum,check)}}
                     onMouseEnter={onMouseConfirmEnter}
                     onMouseLeave={onMouseConfirmLeave}
                ></div>

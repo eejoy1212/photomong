@@ -37,6 +37,7 @@ import done_click_kr from '../../assets/Payment/Cash/kr/done_click.png';
 import done_click_vn from '../../assets/Payment/Cash/vn/done_click.png';
 
 import axios from 'axios';
+import { originAxiosInstance } from '../../api/config';
 
 function Cash() {
   const { t } = useTranslation();
@@ -152,7 +153,7 @@ function Cash() {
   const continuePay = () => {
     if (orderCode) {
       if (parseInt(insertedMoney) >= parseInt(amountToPay)) {
-        axios.post(
+        originAxiosInstance.post(
           `${process.env.REACT_APP_BACKEND}/payments/api/cash/stop`,
           {}
         );

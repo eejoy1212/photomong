@@ -67,6 +67,7 @@ import print_vn_click from '../assets/Sticker/vn/print-pressed.png';
 import frame_box from '../assets/Sticker/frame_box.png';
 import CustomCarousel from '../components/CustomCarousel';
 import VerticalCustomCarousel from '../components/VerticalCustomCarousel';
+import { originAxiosInstance } from '../api/config';
 
 function Filter() {
      const { t } = useTranslation();
@@ -480,7 +481,7 @@ function Filter() {
                formData.append("photo", stageRef.current.toDataURL());
                formData.append("order_code", sessionStorage.getItem('orderCodeNum'));
 
-               axios.post(
+               originAxiosInstance.post(
                     `${process.env.REACT_APP_BACKEND}/frames/api/upload_cloud`,
                     formData,
                     {
@@ -510,7 +511,7 @@ function Filter() {
                formData.append('photo', stageRef.current.toDataURL());
                formData.append('frame', selectedFrame);
 
-               axios.post(
+               originAxiosInstance.post(
                     `${process.env.REACT_APP_BACKEND}/frames/api/print`,
                     formData,
                     {
@@ -737,7 +738,136 @@ function Filter() {
 
 
 }, [bgLength]);  
-console.log("이미지 위치",images[1])
+
+// 선택된 아이템을 가지고 있는 리스트
+const tempPhotos=[{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},]
+const selectedItems = tempPhotos.filter((item, index) => 
+     // selectedPhotos
+[1,2,3,6,7,8]
+.includes(index));
+console.log("choose img",selectedFrame)
+     const getImgListLayout=(selectedFrame,selectedItems)=>{
+        
+          if (selectedFrame==="Stripx2") { 
+                console.log("sel frame in func",selectedFrame)
+               return <div
+               className='selected-photos-s2-list'
+               
+               >
+                    
+                   {selectedItems.map((it,idx)=>
+                   idx%2===0?<div
+                   className='selected-photo-s2-container-first'
+                   ><div
+                    className='selected-photo-s2'
+                      style={{
+                         
+                         backgroundImage: `url(${it.url}})`
+                     }}
+                    /></div>:
+                   <div
+                   className='selected-photo-s2-container'
+                   ><div
+                    className='selected-photo-s2'
+                      style={{
+                         
+                         backgroundImage: `url(${it.url})`
+                     }}
+                    /></div>
+                   )} 
+               </div>
+          }
+          else if(selectedFrame==="2cut-x2"){
+return <div
+className='selected-photos-2-list'
+
+>
+    {selectedItems.map((it,idx)=>
+    idx===0?<div
+    className='selected-photo-2-container-first'
+    ><div
+     className='selected-photo-2'
+       style={{
+          
+          backgroundImage: `url(${it.url})`
+      }}
+     /></div>:
+    <div
+    className='selected-photo-2-container'
+    ><div
+     className='selected-photo-2'
+       style={{
+          
+          backgroundImage: `url(${it.url})`
+      }}
+     /></div>
+    )} 
+</div>
+
+          }
+          else if(selectedFrame==="4-cutx2"){
+               return <div
+               className='selected-photos-c42-list'
+               
+               >
+                    
+                   {selectedItems.map((it,idx)=>
+                   idx%2===0?<div
+                   className='selected-photo-c42-container-first'
+                   style={{ marginTop:idx===2?"-3%":null,}}
+                   ><div
+                    className='selected-photo-c42'
+                      style={{
+                         
+                         backgroundImage: `url(${it.url})`
+                     }}
+                    /></div>:
+                   <div
+                   className='selected-photo-c42-container'
+                   style={{ marginTop:idx===3?"-3%":null,}}
+                   ><div
+                    className='selected-photo-c42'
+                      style={{
+                         backgroundImage: `url(${it.url})`
+                     }}
+                    /></div>
+                   )} 
+               </div>
+          }
+          else if(selectedFrame==="6-cutx2"){
+               return <div
+               className='selected-photos-c62-list'
+               
+               >
+                    
+                   {selectedItems.map((it,idx)=>
+                   idx%2===0?<div
+                   className='selected-photo-c62-container-first'
+                   ><div
+                    className='selected-photo-c62'
+                      style={{
+                         
+                         backgroundColor:"red",
+                         backgroundImage: `url(./temp.jpg)`
+                     }}
+                    /></div>:
+                   <div
+                   className='selected-photo-c62-container'
+                   ><div
+                    className='selected-photo-c62'
+                      style={{
+                         
+                         backgroundColor:"red",
+                         backgroundImage: `url(${it.url})`
+                     }}
+                    /></div>
+                   )} 
+               </div>
+          }
+          else{
+
+          }
+     }
      return (
 <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
 <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>
@@ -761,6 +891,7 @@ console.log("이미지 위치",images[1])
                             backgroundImage: `url(${src})`
                         }}
                     >
+                         {getImgListLayout(selectedFrame,selectedItems)}
                       <Stage
      width={1200}
      height={1000}
@@ -804,9 +935,15 @@ console.log("이미지 위치",images[1])
                
                return (
                     <StickerItem
+                    isStickerDrag={stickerDrag}
+                    isSelected={isSel}
                     setStickerDrag={setStickerDrag}
+                    onTransform={()=>{
+                         console.log("이미지 리사이징 중")
+                    }}
                     onSelect={()=>{
-                         
+                         // setStickerDrag(true)
+                         setIsSel(p=>!p)
                          console.log("스티커 클릭")}}
 
                          onDelete={() => {
@@ -817,6 +954,9 @@ console.log("이미지 위치",images[1])
                          onDragEnd={(event) => {
                               image.x = event.target.x();
                               image.y = event.target.y();
+                         }}
+                         onChange={(x,y,width,height)=>{
+                              console.log("리사이즈 한 너비 / 높이",width,height)
                          }}
                          key={i}
                          image={image}
