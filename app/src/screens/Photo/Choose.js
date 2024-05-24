@@ -45,6 +45,7 @@ function Choose() {
      const [clickedButton, setClickedButton] = useState(false);
 
      const photos = JSON.parse(sessionStorage.getItem('photos'));
+     console.log("사진찍힌것",photos)
      // Split photos into arrays of 4 photos each
      const photoGroups = [];
      for (let i = 0; i < photos.length; i += 4) {
@@ -405,6 +406,7 @@ function Choose() {
           <div className='photo-choose-container' style={{ backgroundImage: `url(${background})` }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/photo")} onMouseEnter={() => hoverGoBackButton(language)} onMouseLeave={() => hoverGoBackButton(language)}></div>
                <div className="left-big-frame">
+                    {/* 프레임속 회색네모 갯수만큼 나오는 곳 */}
                     <div ref={parentRef} className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}
                     </div>

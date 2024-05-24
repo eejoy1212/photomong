@@ -17,6 +17,7 @@ import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
 import background_en from '../../assets/Frame/Style/BG.png';
 import background_kr from '../../assets/Frame/Style/kr/BG.png';
 import background_vn from '../../assets/Frame/Style/vn/BG.png';
+import { originAxiosInstance } from '../../api/config';
 
 function Background() {
      const { t } = useTranslation();
@@ -60,8 +61,10 @@ function Background() {
 
      const fetchBackgrounds = async () => {
           try {
-               const response = await axios.get(`${process.env.REACT_APP_BACKEND}/backgrounds/api`)
+               // const response = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/backgrounds/api`)
+               const response = await originAxiosInstance.get(`/backgrounds/api`)
                const backgroundDatas = response.data
+               console.log("backgroundDatas in bg js",backgroundDatas)
                const storedLanguage = sessionStorage.getItem('language');
 
                const newBackgrounds = backgroundDatas.map(item => ({

@@ -25,6 +25,7 @@ import confirm_kr from '../../assets/Frame/Layout/Confirm/kr/confirm.png';
 import confirm_kr_hover from '../../assets/Frame/Layout/Confirm/kr/confirm_click.png';
 import confirm_vn from '../../assets/Frame/Layout/Confirm/vn/confirm.png';
 import confirm_vn_hover from '../../assets/Frame/Layout/Confirm/vn/confirm_click.png';
+import { originAxiosInstance } from '../../api/config';
 
 function Layout() {
      const [layoutBackground, setLayoutBackground] = useState(null);
@@ -144,7 +145,7 @@ function Layout() {
                          const partyBg="Party"
                          const cartoonBg="Cartoon"
                          const minBg= "Minimalism"
-                    const seasonsResponse = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + seasonsBg + '/frame/' + JSON.parse(frame).frame);
+                    const seasonsResponse = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + seasonsBg + '/frame/' + JSON.parse(frame).frame);
                     const seasonsLayoutDatas = seasonsResponse.data
                     const seasonsNewBackgrounds = seasonsLayoutDatas.map(item => ({
                          title: item.title,
@@ -152,7 +153,7 @@ function Layout() {
                          photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover,
                          photo_full: process.env.REACT_APP_BACKEND + item.photo_full
                     }));
-                    const partyResponse = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + partyBg + '/frame/' + JSON.parse(frame).frame);
+                    const partyResponse = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + partyBg + '/frame/' + JSON.parse(frame).frame);
                     const partyLayoutDatas =partyResponse.data
                     const partyNewBackgrounds = partyLayoutDatas.map(item => ({
                          title: item.title,
@@ -160,7 +161,7 @@ function Layout() {
                          photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover,
                          photo_full: process.env.REACT_APP_BACKEND + item.photo_full
                     }));
-                    const cartoonResponse = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + cartoonBg + '/frame/' + JSON.parse(frame).frame);
+                    const cartoonResponse = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + cartoonBg + '/frame/' + JSON.parse(frame).frame);
                     const cartoonLayoutDatas =cartoonResponse.data
                     const cartoonNewBackgrounds = cartoonLayoutDatas.map(item => ({
                          title: item.title,
@@ -168,7 +169,7 @@ function Layout() {
                          photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover,
                          photo_full: process.env.REACT_APP_BACKEND + item.photo_full
                     }));
-                    const minResponse = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + minBg + '/frame/' + JSON.parse(frame).frame);
+                    const minResponse = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + minBg + '/frame/' + JSON.parse(frame).frame);
                     const minLayoutDatas =minResponse.data
                     const minNewBackgrounds = minLayoutDatas.map(item => ({
                          title: item.title,

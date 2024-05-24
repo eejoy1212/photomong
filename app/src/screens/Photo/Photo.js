@@ -47,7 +47,7 @@ function Photo() {
 setTimeout(async () => {      
       const response=await sendCaptureReq()     
  console.log("response result>>>",response)  
-//      // setFlash(false);
+     setFlash(false);
 }, 5000);
           if (photoCount == 7) {
                const photosWithIds = newPhotoArray.map((photo, index) => ({

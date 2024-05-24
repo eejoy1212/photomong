@@ -17,6 +17,7 @@ import goback_kr from '../../assets/Common/kr/goback.png';
 import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
 import goback_vn from '../../assets/Common/vn/goback.png';
 import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
+import { originAxiosInstance } from '../../api/config';
 
 
 function Frame() {
@@ -79,7 +80,7 @@ const src='./choose_frame_layout.wav'
 
   const fetchFrames = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND}/frames/api`)
+      const response = await originAxiosInstance.get(`${process.env.REACT_APP_BACKEND}/frames/api`)
       const frames = response.data
 
       frames.forEach(frame => {
