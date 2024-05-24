@@ -23,6 +23,7 @@ function Photo() {
      const [intervalId, setIntervalId] = useState(null);
      const [photos, setPhotos] = useState([]);
      const [flash, setFlash] = useState(false);
+     
      const [clickedButton, setClickedButton] = useState(false);
 
      const [backgroundImage, setBackgroundImage] = useState(background_en);

@@ -28,6 +28,7 @@ from dashboard import urls as dashboard_urls
 from account import urls as account_urls
 from zalopay import urls as zalopay_urls
 from redeem import urls as redeem_urls
+from upload import urls as upload_urls
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -46,6 +47,7 @@ urlpatterns = [
     path('account/', include(account_urls)),
     path('zalopay/', include(zalopay_urls)),
     path('redeem/', include(redeem_urls)),
+    path('upload/', include(upload_urls)),  # upload 앱의 URL을 include
 ]
 
 if settings.DEBUG:
