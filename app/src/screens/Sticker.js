@@ -867,31 +867,43 @@ src={selectedItems[3].url}
           }
           else if(selectedFrame==="6-cutx2"){
                return <div
-               className='selected-photos-c62-list'
-               
-               >
-                    
-                   {selectedItems.map((it,idx)=>
-                   idx%2===0?<div
-                   className='selected-photo-c62-container-first'
-                   ><div
-                    className='selected-photo-c62'
-                      style={{
-                         backgroundColor:"red"
-                         // backgroundImage: `url(${it.url})`
-                     }}
-                    /></div>:
-                   <div
-                   className='selected-photo-c62-container'
-                   ><div
-                    className='selected-photo-c62'
-                      style={{
-                         
-                         backgroundColor:"red",
-                         backgroundImage: `url(${it.url})`
-                     }}
-                    /></div>
-                   )} 
+               className='cut6x2-container'>
+                    {/* 1 row */}
+                    <div
+                    className='cut6x2-row'
+                    ><img
+                    className='cut6x2-img'
+                    src={selectedItems[0].url}
+                    />
+                         <img
+                         className='cut6x2-img'
+                    src={selectedItems[1].url}
+                    />
+                    </div>
+                     {/* 2 row */}
+                     <div
+                    className='cut6x2-row'
+                    ><img
+                    className='cut6x2-img'
+                    src={selectedItems[2].url}
+                    />
+                         <img
+                         className='cut6x2-img'
+                    src={selectedItems[3].url}
+                    />
+                    </div>
+                    {/* 3 row */}
+                    <div
+                    className='cut6x2-row'
+                    ><img
+                    className='cut6x2-img'
+                    src={selectedItems[4].url}
+                    />
+                         <img
+                         className='cut6x2-img'
+                    src={selectedItems[5].url}
+                    />
+                    </div>
                </div>
           }
           else{
