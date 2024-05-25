@@ -109,7 +109,7 @@ function QR() {
      const hoverGoBackButton = () => {
           setGoBackBg([goback_en_hover, goback_en_hover]);
      }
-
+console.log("qr code",qrCode)
      return (
           <div className='qr-container' style={{ backgroundImage: `url(${background})` }}>
                <div className='qr-code'>
