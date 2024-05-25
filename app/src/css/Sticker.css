@@ -242,12 +242,13 @@
      background-position: center; /* 이미지가 가운데에 위치하도록 설정 */
 }
 .selected-photos-s2-list{
-     width: 75%;
-     margin-left: 13%;
-     height:30%;
+     width: 61%;
+     margin-left: 19%;
+     margin-top: 5%;
+     height:22.6%;
      display: flex;
      flex-direction: column;
-     /* gap: 5%; */
+     gap: 6%;
      /* align-items: flex-start;
      justify-content: flex-start;
      flex-wrap: wrap;
@@ -333,7 +334,7 @@
      margin-right:2.5%;
 }
 .stripx2img{
-     /* height: 100%; */
+     height: 100%;
      width: 50%;
      background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
      background-position: center;
@@ -341,8 +342,9 @@
 .selected-photos-s2-row{
      display: flex;
      flex-direction: row;
-     /* height: 100%; */
-     width: 100%;
+     gap: 4%;
+     height: 100%;
+     width: 97%;
 }
 .cut4x2-container{
      position: absolute;
