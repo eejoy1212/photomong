@@ -56,23 +56,23 @@ function Choose() {
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
      };
-     const testGetPhotos=async()=>{
-          const photos=await getPhotos()
-          console.log("axios photos",photos)
-          const formattedImages = photos.images.map(img => {
-               // const newImages=p.images.map(img=>{return {...img,url:img.url.replace(/\\/g, '\\') }})
-               // return { status:p.status, images:newImages};
-               return {...img,url:img.url.replace(/\\/g, '/')             }
+     // const testGetPhotos=async()=>{
+     //      const photos=await getPhotos()
+     //      console.log("axios photos",photos)
+     //      const formattedImages = photos.images.map(img => {
+     //           // const newImages=p.images.map(img=>{return {...img,url:img.url.replace(/\\/g, '\\') }})
+     //           // return { status:p.status, images:newImages};
+     //           return {...img,url:img.url.replace(/\\/g, '/')             }
                
-             });
-             console.log("포맷",formattedImages)
-             const newObj={status:photos.status,images:formattedImages}
-             sessionStorage.setItem('photos', JSON.stringify(newObj));
-     }
-useEffect(()=>{
-     //사진 제대로 들어오는지 보기위한 테스트 코드
-     testGetPhotos()
-},[])
+     //         });
+     //         console.log("포맷",formattedImages)
+     //         const newObj={status:photos.status,images:formattedImages}
+     //         sessionStorage.setItem('photos', JSON.stringify(newObj));
+     // }
+// useEffect(()=>{
+//      //사진 제대로 들어오는지 보기위한 테스트 코드
+//      testGetPhotos()
+// },[])
 
 // console.log("포토스",formattedPhotos)
      useEffect(() => {
@@ -419,7 +419,6 @@ useEffect(()=>{
                setContinueButton(continueButton == continue_vn ? continue_vn_hover : continue_vn);
           }
      }
-
      return (
           <div className='photo-choose-container' style={{ backgroundImage: `url(${background})` }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/photo")} onMouseEnter={() => hoverGoBackButton(language)} onMouseLeave={() => hoverGoBackButton(language)}></div>

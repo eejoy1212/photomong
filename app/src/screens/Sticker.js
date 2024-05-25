@@ -104,6 +104,7 @@ function Filter() {
      const [clickedButton, setClickedButton] = useState(false);
      const [stickerDrag,setStickerDrag]=useState(false)
 const [photos,setPhotos]=useState([])
+const [selectedItems,setSelectedItems]=useState([])
      const background = new Image();
      background.crossOrigin = 'Anonymous';
      background.src = '/photo_saved/photo.png'//sessionStorage.getItem('downloaded-image');
@@ -120,8 +121,14 @@ useEffect(()=>{
      const photos = JSON.parse(sessionStorage.getItem('photos'));
 console.log("photos>>>",photos)
 if (photos===null)return;
-     setPhotos(photos.images)
+     setPhotos(photos)
 },[])
+useEffect(()=>{
+     if (!photos)return;
+     const selItems = photos.filter((item, index) => selectedPhotos.includes(index));
+
+     setSelectedItems(selItems)
+},[photos])
      useEffect(() => {
           if (!background.src) {
                // background.src = sessionStorage.getItem('downloaded-image');
@@ -745,8 +752,8 @@ if (photos===null)return;
 
 // 선택된 아이템을 가지고 있는 리스트
 const tempPhotos=[{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},]
-const selectedItems = photos.filter((item, index) => selectedPhotos.includes(index));
-console.log("choose img",photos)
+console.log("choose img",selectedItems,selectedFrame,photos)
+
      const getImgListLayout=(selectedFrame,selectedItems)=>{
         
           if (selectedFrame==="Stripx2") { 
@@ -847,8 +854,8 @@ className='selected-photos-2-list'
                    ><div
                     className='selected-photo-c62'
                       style={{
-                         
-                         backgroundImage: `url(${it.url})`
+                         backgroundColor:"red"
+                         // backgroundImage: `url(${it.url})`
                      }}
                     /></div>:
                    <div
