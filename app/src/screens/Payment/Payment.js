@@ -139,13 +139,19 @@ function Payment() {
   }
 
   const goToPay = (method) => {
+    sessionStorage.setItem("payMethod",method)
     if (method === 'cash') {
       navigate('/payment-cash');
     } else if (method === 'momo') {
       navigate('/payment-qr');
     } else if (method === 'zalopay') {
       navigate('/payment-qr');
-    } else if (method === 'promo') {
+    } 
+    else if (method === 'vnpay') {
+  
+      navigate('/payment-qr');
+    }
+    else if (method === 'promo') {
       navigate('/payment-promo');
     }
   }
@@ -155,6 +161,7 @@ function Payment() {
       <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/layout")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
       <div className="payment-line">
         <div className="payment-method" style={{ backgroundImage: `url(${cashButton})` }} onMouseEnter={() => hoverMouseEffect('cash')} onMouseLeave={() => hoverMouseEffect('cash')} onClick={() => goToPay('cash')}></div>        
+        <div className="payment-method" style={{ backgroundImage: `url(${vnpayButton})` }} onMouseEnter={() => hoverMouseEffect('vnpay')} onMouseLeave={() => hoverMouseEffect('vnpay')} onClick={() => goToPay('vnpay')}></div>
         <div className="payment-method" style={{ backgroundImage: `url(${zalopayButton})` }} onMouseEnter={() => hoverMouseEffect('zalopay')} onMouseLeave={() => hoverMouseEffect('zalopay')} onClick={() => goToPay('zalopay')}></div>
         <div className="payment-method" style={{ backgroundImage: `url(${promoButton})` }} onMouseEnter={() => hoverMouseEffect('promo')} onMouseLeave={() => hoverMouseEffect('promo')} onClick={() => goToPay('promo')}></div>
       </div>
