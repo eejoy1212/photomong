@@ -242,14 +242,18 @@
      background-position: center; /* 이미지가 가운데에 위치하도록 설정 */
 }
 .selected-photos-s2-list{
+     width: 75%;
+     margin-left: 13%;
+     height:30%;
      display: flex;
+     flex-direction: column;
      /* gap: 5%; */
-     align-items: flex-start;
+     /* align-items: flex-start;
      justify-content: flex-start;
      flex-wrap: wrap;
      width: 100%;
      height: 69%;
-     margin-top: 3%;
+     margin-top: 3%; */
 }
 .selected-photo-s2-container-first{
      margin-left:19.6%;
@@ -268,6 +272,7 @@
 
      margin-right: 4.7%;
 }
+
 .selected-photos-c42-list{
      display: flex;
      /* gap: 5%; */
@@ -326,4 +331,55 @@
      margin-bottom: 3.8%;
 
      margin-right:2.5%;
+}
+.stripx2img{
+     /* height: 100%; */
+     width: 50%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
+}
+.selected-photos-s2-row{
+     display: flex;
+     flex-direction: row;
+     /* height: 100%; */
+     width: 100%;
+}
+.cut4x2-container{
+     position: absolute;
+     bottom: 70px;
+width: 100%;
+height: 70%;
+/* background-color: red; */
+}
+.cut4x2-0{
+     margin-left: 13%;
+     margin-top: 6%;
+     width:35% ;
+     height: 40%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
+}
+.cut4x2-1{
+     margin-left: 4%;
+     margin-top: 6%;
+     width:35% ;
+     height: 40%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
+}
+.cut4x2-2{
+     margin-left: 13%;
+     margin-top: 2%;
+     width:35% ;
+     height: 40%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
+}
+.cut4x2-3{
+     margin-left: 4%;
+     margin-top: 2%;
+     width:35% ;
+     height: 40%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
 }

@@ -752,37 +752,63 @@ useEffect(()=>{
 
 // 선택된 아이템을 가지고 있는 리스트
 const tempPhotos=[{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},{url:"./temp.jpg"},]
-console.log("choose img",selectedItems,selectedFrame,photos)
+console.log("choose img",selectedItems,selectedPhotos)
 
      const getImgListLayout=(selectedFrame,selectedItems)=>{
-        
+        if (selectedItems.length===0) {
+          
+          return <></>
+        }
           if (selectedFrame==="Stripx2") { 
-                console.log("sel frame in func",selectedFrame)
+                console.log("sel frame in func",selectedFrame,selectedItems)
                return <div
                className='selected-photos-s2-list'
                
                >
-                    
-                   {selectedItems.map((it,idx)=>
-                   idx%2===0?<div
-                   className='selected-photo-s2-container-first'
-                   ><div
-                    className='selected-photo-s2'
-                      style={{
-                         
-                         backgroundImage: `url(${it.url}})`
-                     }}
-                    /></div>:
+                    {/* 1 row */}
+                     <div
+                 className='selected-photos-s2-row'
+                   ><img
+className='stripx2img'
+                   src={selectedItems[0].url}
+                   />
+                   <img
+className='stripx2img'
+                   src={selectedItems[1].url}
+                   /></div>
+                   {/* 2 row */}
                    <div
-                   className='selected-photo-s2-container'
-                   ><div
-                    className='selected-photo-s2'
-                      style={{
-                         
-                         backgroundImage: `url(${it.url})`
-                     }}
-                    /></div>
-                   )} 
+                  className='selected-photos-s2-row'
+                 ><img
+className='stripx2img'
+                 src={selectedItems[2].url}
+                 />
+                 <img
+className='stripx2img'
+                 src={selectedItems[3].url}
+                 /></div>
+                  {/* 3 row */}
+                  <div
+                  className='selected-photos-s2-row'
+                 ><img
+className='stripx2img'
+                 src={selectedItems[4].url}
+                 />
+                 <img
+className='stripx2img'
+                 src={selectedItems[5].url}
+                 /></div>
+                  {/* 4 row */}
+                  <div
+                  className='selected-photos-s2-row'
+                 ><img
+className='stripx2img'
+                 src={selectedItems[6].url}
+                 />
+                 <img
+className='stripx2img'
+                 src={selectedItems[7].url}
+                 /></div>
                </div>
           }
           else if(selectedFrame==="2cut-x2"){
@@ -814,33 +840,30 @@ className='selected-photos-2-list'
 
           }
           else if(selectedFrame==="4-cutx2"){
+               console.log("이건가")
                return <div
-               className='selected-photos-c42-list'
-               
+               className='cut4x2-container'
                >
-                    
-                   {selectedItems.map((it,idx)=>
-                   idx%2===0?<div
-                   className='selected-photo-c42-container-first'
-                   style={{ marginTop:idx===2?"-3%":null,}}
-                   ><div
-                    className='selected-photo-c42'
-                      style={{
-                         
-                         backgroundImage: `url(${it.url})`
-                     }}
-                    /></div>:
-                   <div
-                   className='selected-photo-c42-container'
-                   style={{ marginTop:idx===3?"-3%":null,}}
-                   ><div
-                    className='selected-photo-c42'
-                      style={{
-                         backgroundImage: `url(${it.url})`
-                     }}
-                    /></div>
-                   )} 
+<img
+className='cut4x2-0'
+src={selectedItems[0].url}
+/>
+<img
+className='cut4x2-1'
+src={selectedItems[1].url}
+/>
+<img
+className='cut4x2-2'
+src={selectedItems[2].url}
+/>
+<img
+className='cut4x2-3'
+src={selectedItems[3].url}
+/>
+
                </div>
+               
+               
           }
           else if(selectedFrame==="6-cutx2"){
                return <div
