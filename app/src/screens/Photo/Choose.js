@@ -26,6 +26,7 @@ import continue_kr from '../../assets/Common/kr/continue.png';
 import continue_kr_hover from '../../assets/Common/kr/continue_click.png';
 import continue_vn from '../../assets/Common/vn/continue.png';
 import continue_vn_hover from '../../assets/Common/vn/continue_click.png';
+import { getPhotos } from '../../api/config';
 
 function Choose() {
      const { t } = useTranslation();
@@ -43,9 +44,9 @@ function Choose() {
      const [continueButton, setContinueButton] = useState(continue_en);
 
      const [clickedButton, setClickedButton] = useState(false);
-
+// const [formattedPhotos,setFormattedPhotos]=useState([])
      const photos = JSON.parse(sessionStorage.getItem('photos'));
-     console.log("사진찍힌것",photos)
+
      // Split photos into arrays of 4 photos each
      const photoGroups = [];
      for (let i = 0; i < photos.length; i += 4) {
@@ -55,8 +56,25 @@ function Choose() {
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
      };
+     const testGetPhotos=async()=>{
+          const photos=await getPhotos()
+          console.log("axios photos",photos)
+          const formattedImages = photos.images.map(img => {
+               // const newImages=p.images.map(img=>{return {...img,url:img.url.replace(/\\/g, '\\') }})
+               // return { status:p.status, images:newImages};
+               return {...img,url:img.url.replace(/\\/g, '/')             }
+               
+             });
+             console.log("포맷",formattedImages)
+             const newObj={status:photos.status,images:formattedImages}
+             sessionStorage.setItem('photos', JSON.stringify(newObj));
+     }
+useEffect(()=>{
+     //사진 제대로 들어오는지 보기위한 테스트 코드
+     testGetPhotos()
+},[])
 
-
+// console.log("포토스",formattedPhotos)
      useEffect(() => {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage) {

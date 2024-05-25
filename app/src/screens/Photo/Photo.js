@@ -12,7 +12,7 @@ import background_en from '../../assets/Photo/Snap/BG.png';
 import background_kr from '../../assets/Photo/Snap/kr/BG.png';
 import background_vn from '../../assets/Photo/Snap/vn/BG.png';
 import axios from 'axios';
-import { axiosInstance, sendCaptureReq } from '../../api/config';
+import { axiosInstance, getPhotos, sendCaptureReq } from '../../api/config';
 
 
 function Photo() {
@@ -54,7 +54,19 @@ setTimeout(async () => {
                     id: index,
                     url: photo
                }));
-               sessionStorage.setItem('photos', JSON.stringify(photosWithIds));
+
+               const photos=await getPhotos()
+               console.log("axios photos",photos)
+               const formattedImages = photos.images.map(img => {
+                    // const newImages=p.images.map(img=>{return {...img,url:img.url.replace(/\\/g, '\\') }})
+                    // return { status:p.status, images:newImages};
+                    return {...img,url:img.url.replace(/\\/g, '/')             }
+                    
+                  });
+                  console.log("포맷",formattedImages)
+                  const newObj={status:photos.status,images:formattedImages}
+                  sessionStorage.setItem('photos', JSON.stringify(newObj));
+               
                //3~5초
                navigate('/photo-choose')
           } else {
