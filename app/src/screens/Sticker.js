@@ -119,6 +119,7 @@ const [photos,setPhotos]=useState([])
 useEffect(()=>{
      const photos = JSON.parse(sessionStorage.getItem('photos'));
 console.log("photos>>>",photos)
+if (photos===null)return;
      setPhotos(photos.images)
 },[])
      useEffect(() => {
