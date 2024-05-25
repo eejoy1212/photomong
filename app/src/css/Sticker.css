@@ -228,7 +228,7 @@
      margin-top: 8.6%;
 
      margin-right: 5%;
-     background-color: aqua;
+     /* background-color: aqua; */
 }
 .selected-photo-2-container-first{
 
@@ -236,10 +236,10 @@
 }
 
 .selected-photo-2{
-/* height: 100%; */
-width: 100%;
-height: 100%;
-object-fit: cover;
+     height: 100%;
+     width: 100%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center; /* 이미지가 가운데에 위치하도록 설정 */
 }
 .selected-photos-s2-list{
      display: flex;
@@ -255,9 +255,10 @@ object-fit: cover;
      margin-left:19.6%;
 }
 .selected-photo-s2{
-     width: 100%;
      height: 100%;
-     object-fit: cover;  
+     width: 100%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center; /* 이미지가 가운데에 위치하도록 설정 */
 }
 .selected-photo-s2-container-first,
 .selected-photo-s2-container{
@@ -284,9 +285,10 @@ object-fit: cover;
 
 }
 .selected-photo-c42{
+    height: 100%;
      width: 100%;
-     height: 100%;
-     object-fit: cover;  
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center; /* 
 }
 .selected-photo-c42-container-first,
 .selected-photo-c42-container{
@@ -305,15 +307,16 @@ object-fit: cover;
      width: 100%;
      height: 80%;
      margin-top: 5%;
-     /* background-color: cadetblue; */
+     background-color: cadetblue;
 }
 .selected-photo-c62-container-first{
      margin-left:22%;
 }
 .selected-photo-c62{
-     width: 100%;
      height: 100%;
-     object-fit: cover;  
+     width: 100%;
+     background-size: cover; /* 이미지가 부모 요소에 꽉 차게 나타나도록 설정 */
+     background-position: center;
 }
 .selected-photo-c62-container-first,
 .selected-photo-c62-container{

@@ -66,7 +66,7 @@ setTimeout(async () => {
                   });
                   console.log("포맷",formattedImages)
                   const newObj={status:photos.status,images:formattedImages}
-                  sessionStorage.setItem('photos', JSON.stringify(newObj));
+                  sessionStorage.setItem('photos', JSON.stringify(formattedImages));
                
                //3~5초
                navigate('/photo-choose')
