@@ -66,12 +66,12 @@ function PaymentNumber(props) {
         setPhotoNum(p => (p > 2 ? p - 1 : p));
     };
       const goToPayment = async(dongNum,checkCoupon) => {  
-         console.log("백앤드로 dongNum 넘어갔나",dongNum)
+    
         // if (confirmClick === confirmButton) {
 const res=await sendDongNum(dongNum,checkCoupon===true?1:0)
-
+     console.log("res>>>",res)
           
-            //  navigate('/payment');
+             navigate('/payment');
             //  navigate('/payment-number');
         // }
    }

@@ -41,4 +41,8 @@ export const sendDongNum = async (dongNum, checkCoupon) => {
     throw error; // 에러를 호출자에게 다시 던집니다.
   }
 };
+export const getPhotos=async()=>{
+  const { data } = await originAxiosInstance.get('/get_photo/')
+  return data
+}
 // export const 
