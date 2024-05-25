@@ -29,8 +29,10 @@ from account import urls as account_urls
 from zalopay import urls as zalopay_urls
 from redeem import urls as redeem_urls
 from upload import urls as upload_urls
+from get_photo import urls as get_photo_urls
 from django.conf import settings
 from django.conf.urls.static import static
+from get_photo.views import serve_photo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,6 +50,8 @@ urlpatterns = [
     path('zalopay/', include(zalopay_urls)),
     path('redeem/', include(redeem_urls)),
     path('upload/', include(upload_urls)),  # upload 앱의 URL을 include
+    path('get_photo/', include(get_photo_urls)),  # upload 앱의 URL을 include
+    path('get_photo/uploads/<path:file_path>', serve_photo, name='serve_photo'),
 ]
 
 if settings.DEBUG:
