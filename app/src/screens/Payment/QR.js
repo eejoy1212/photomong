@@ -47,7 +47,8 @@ function QR() {
                try {
                     const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
                     const framePrice = sessionStorage.getItem('framePrice');
-                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/zalopay/api?device=${deviceNumber}&amount=${framePrice}`);
+                    const method=sessionStorage.getItem("payMethod")
+                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/${method}/api?device=${deviceNumber}&amount=${framePrice}`);
                     const qrCodeData = await response.json();
                     setQrCode(qrCodeData.qr_code);
                     setOrderCode(qrCodeData.order_code);
@@ -109,7 +110,7 @@ function QR() {
      const hoverGoBackButton = () => {
           setGoBackBg([goback_en_hover, goback_en_hover]);
      }
-console.log("qr code",qrCode)
+console.log("qr code",sessionStorage)
      return (
           <div className='qr-container' style={{ backgroundImage: `url(${background})` }}>
                <div className='qr-code'>
