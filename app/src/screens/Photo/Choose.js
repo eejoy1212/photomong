@@ -158,36 +158,79 @@ function Choose() {
      const handleMouseLeave = () => {
           setHoveredImage(null);
      }
-
      const copyImageApi = async () => {
           const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+          console.log('sessionSelectedLayout:', sessionSelectedLayout); // 원본 데이터 확인
           if (!sessionSelectedLayout) {
-               return;
+              return;
           }
-
+      
           const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+          console.log('parsedSelectedLayout:', parsedSelectedLayout); // 파싱된 데이터 확인
+      
+          // 배열의 첫 번째 요소에 접근
+          const layoutData = parsedSelectedLayout[0]; 
+      
           const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
           const copyImageData = {
-               photo_url: parsedSelectedLayout.photo,
-               photo_cover: parsedSelectedLayout.photo_cover
+              photo_url: layoutData.photo,
+              photo_cover: layoutData.photo_cover
           };
-
+          console.log('copyImageData:', copyImageData); // 최종 전송 데이터 확인
+      
           try {
-               const response = await fetch(copyImageUrl, {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(copyImageData)
-               });
-               const data = await response.json();
-               sessionStorage.setItem('copiedPhoto', data.photo_path);
-               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);
-
+              const response = await fetch(copyImageUrl, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(copyImageData)
+              });
+              const data = await response.json();
+              alert(data);
+              sessionStorage.setItem('copiedPhoto', data.photo_path);
+              sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);
+      
           } catch (error) {
-               console.error(`Failed to copy image: ${error}`);
+              console.error(`Failed to copy image: ${error}`);
           }
-     };
+      };
+      
+      
+
+     // const copyImageApi = async () => {
+     //      const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+     //      if (!sessionSelectedLayout) {
+     //           return;
+     //      }
+
+     //      const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+     //      const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
+     //      const copyImageData = {
+     //           photo_url: parsedSelectedLayout.photo,
+     //           photo_cover: parsedSelectedLayout.photo_cover
+     //      };
+
+     //      try {
+     //           console.log(copyImageData);
+     //           alert(sessionSelectedLayout);
+     //           alert(copyImageUrl);
+     //           const response = await fetch(copyImageUrl, {
+     //                method: 'POST',
+     //                headers: {
+     //                     'Content-Type': 'application/json'
+     //                },
+     //                body: JSON.stringify(copyImageData)
+     //           });
+     //           const data = await response.json();
+     //           alert(data);
+     //           sessionStorage.setItem('copiedPhoto', data.photo_path);
+     //           sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);
+
+     //      } catch (error) {
+     //           console.error(`Failed to copy image: ${error}`);
+     //      }
+     // };
 
      const goToFilter = () => {
           if (clickedButton) {
