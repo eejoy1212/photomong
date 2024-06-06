@@ -93,7 +93,17 @@ function Cash() {
                }
           }
      }, []);
-
+     const sound='./enter_pro.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(sound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
      }

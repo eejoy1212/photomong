@@ -545,7 +545,18 @@ function Choose() {
      const [clickedButton, setClickedButton] = useState(false);
 // const [formattedPhotos,setFormattedPhotos]=useState([])
      const photos = JSON.parse(sessionStorage.getItem('photos'));
-
+     
+     const sound='./choose_photos.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(sound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      // Split photos into arrays of 4 photos each
      const photoGroups = [];
      for (let i = 0; i < photos.length; i += 4) {

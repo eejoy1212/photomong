@@ -47,14 +47,14 @@ function App() {
   };
 
   const changeButtonBackground = (type,lang) => {
-// if (type==="Enter") {
-//   const src = './lets-start.wav';
-//   //음성 재생
-//   const audio = new Audio(src);
-//   audio.muted = true;
-//   audio.play();
-//   audio.muted = false;
-// }
+if (type==="Enter") {
+  const src = './lets-start.wav';
+  //음성 재생
+  const audio = new Audio(src);
+  audio.muted = true;
+  audio.play();
+  audio.muted = false;
+}
   
     if (lang === 'en') {
       setButtonBackground(buttonBackground === start_en ? start_click_en : start_en);

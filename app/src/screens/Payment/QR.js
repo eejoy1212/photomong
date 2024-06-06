@@ -41,7 +41,17 @@ function QR() {
                setBackground(background_en);
           }
      })
-
+     const sound='./scan_qr.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(sound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      useEffect(() => {
           const fetchQRPayment = async () => {
                try {

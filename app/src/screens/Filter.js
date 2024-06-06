@@ -110,7 +110,17 @@ function Filter() {
      const [continueButton, setContinueButton] = useState(continue_en);
      const [goBackButton, setGoBackButton] = useState(goback_en);
      const [clickedButton, setClickedButton] = useState(false);
-
+     const sound='./choose_filter.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(sound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      const selectedFilterEffects = [
           {
                id: 1,

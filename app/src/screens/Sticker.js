@@ -3296,6 +3296,7 @@ function Filter() {
      const [stickerDrag,setStickerDrag]=useState(false)
 const [photos,setPhotos]=useState([])
 const [selectedItems,setSelectedItems]=useState([])
+
      const background = new Image();
      background.crossOrigin = 'Anonymous';
      background.src = '/photo_saved/photo.png'//sessionStorage.getItem('downloaded-image');
@@ -3307,7 +3308,17 @@ const [selectedItems,setSelectedItems]=useState([])
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
      };
-
+     const addEmojiSound='./add_emoji.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(addEmojiSound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
 useEffect(()=>{
      const photos = JSON.parse(sessionStorage.getItem('photos'));
 console.log("photos>>>",photos)
@@ -4108,6 +4119,7 @@ src={selectedItems[3].url}
          
           return { x: newStickerX, y: newStickerY, width: newStickerWidth, height: newStickerHeight };
       }
+      
      return (
 <div className='sticker-container' style={{ backgroundImage: `url(${backgroundImage})` }}>
 <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/filter")} onMouseEnter={hoverGoBackButton} onMouseLeave={hoverGoBackButton}></div>

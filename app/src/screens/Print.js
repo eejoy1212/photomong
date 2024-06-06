@@ -18,7 +18,17 @@ function Print() {
      const [hoveredImage, setHoveredImage] = useState(null);
 
      const [background, setBackground] = useState(background_en);
-
+     const sound='./thank_being.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(sound); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      useEffect(() => {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage === 'en') {
@@ -29,7 +39,17 @@ function Print() {
                setBackground(background_vn);
           }
      }, []);
-
+     const src='./print.wav'
+     // const audioRef = useRef(null);
+   
+     useEffect(() => {
+       //음성 재생
+       const audio = new Audio(src); 
+       audio.muted=true
+       audio.play()
+       audio.muted=false
+   
+     }, []);
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
      }

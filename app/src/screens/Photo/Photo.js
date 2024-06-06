@@ -1458,11 +1458,14 @@ function Photo() {
     const [photos, setPhotos] = useState([]);
     const [flash, setFlash] = useState(false);
     const [backgroundImage, setBackgroundImage] = useState(background_en);
-
+  const soundTakePhoto='./take_photo.wav'
     const startLiveView = async () => {
         try {
+                     //음성 재생
+      
+       console.log(response.data);
             const response = await axios.post('http://127.0.0.1:5000/start_live_view', {}, { withCredentials: true });
-            console.log(response.data);
+   
         } catch (error) {
             console.error('Error starting live view:', error);
         }
@@ -1476,7 +1479,15 @@ function Photo() {
             console.error('Error stopping live view:', error);
         }
     };
+useEffect(()=>{
+    if (flash) {
+           const audio = new Audio(soundTakePhoto); 
+    audio.muted=true
+    audio.play()
+    audio.muted=false   
+    }
 
+},[flash])
     const capturePhoto = async () => {
         setFlash(true);
 
@@ -1547,7 +1558,17 @@ function Photo() {
             stopLiveView();  // 컴포넌트가 언마운트될 때 라이브뷰 중지
         };
     }, []);
-
+    const sound='./look_up_smile.wav'
+    // const audioRef = useRef(null);
+  
+    useEffect(() => {
+      //음성 재생
+      const audio = new Audio(sound); 
+      audio.muted=true
+      audio.play()
+      audio.muted=false
+  
+    }, []);
     return (
         <div className={`photo-container ${flash ? 'animate' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
             <div className="left-photo-div" style={{ backgroundImage: `url(${countdownImg})` }}>
