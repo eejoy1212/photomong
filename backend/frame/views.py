@@ -680,7 +680,7 @@ def print_photo(request):
     if request.method == 'POST':
         try:
             print("print_photo")
-            folder_path = "C:\\Users\\USER\\Desktop\\DeepSoft\\Project\\포토키오스크\\photomong\\print_files"
+            folder_path = r"C:\\Users\\USER\\Desktop\\DeepSoft\\Project\\포토키오스크\\photomong\\photomong\\print_files"
             if not os.path.exists(folder_path):
                 os.makedirs(folder_path)
 
@@ -712,6 +712,15 @@ def print_photo(request):
                 print_url = settings.API_PRINTER_6
             
             file_path = os.path.join(folder_path, print_file_name)
+
+
+            print(111)
+            print("file_path")
+            print(file_path)
+            print(111)
+
+
+            print(image_file)
             with open(file_path, 'wb') as destination:
                 destination.write(base64.b64decode(image_file.split(',')[1]))
 

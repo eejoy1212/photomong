@@ -88,6 +88,8 @@
 
 # if __name__ == '__main__':
 #     app.run(host='127.0.0.1', port=8001)
+
+
 import os
 import subprocess
 import tempfile
@@ -114,6 +116,9 @@ def print_image_with_rundll32(image_path):
 
 @app.route('/api/switch-printer/<printer_model>/<frame_type>/', methods=['POST'])
 def switch_printer(printer_model, frame_type):
+    print(request.files)
+    print(request)
+    
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
     
@@ -126,6 +131,8 @@ def switch_printer(printer_model, frame_type):
     file_path = os.path.join(temp_dir, safe_filename)
     file.save(file_path)
 
+
+    print(file_path)
     try:
         # Print the image file
         print_image_with_rundll32(file_path)

@@ -7,9 +7,9 @@ import axios from "axios";
 // export const BaseURL = "http://118.33.212.138:5000"//"http://118.33.212.138:8000"
 
 
-// Django
+// // Django
 const OriginBaseURL="http://127.0.0.1:8000"
-//Flask
+// //Flask
 export const BaseURL = "http://127.0.0.1:5000"//"http://118.33.212.138:8000"
 
 // Created an axios instance adding our api BaseURL
