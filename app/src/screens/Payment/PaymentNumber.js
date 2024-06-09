@@ -33,7 +33,7 @@ function PaymentNumber(props) {
     const [background, setBackground] = useState(background_en);
     const [minusBtn,setMinusBtn]=useState(minusDefault)
     const [plusBtn,setPlusBtn]=useState(plusDefault)
-    const [photoNum,setPhotoNum]=useState(2)
+    const [photoNum,setPhotoNum]=useState(1)
     const [goBackBg, setGoBackBg] = useState([]);
     const [language, setLanguage] = useState(null);
     const [check,setCheck]=useState(false)
@@ -63,7 +63,7 @@ function PaymentNumber(props) {
     };
 
     const onMinus = () => {
-        setPhotoNum(p => (p > 2 ? p - 1 : p));
+        setPhotoNum(p => (p > 1 ? p - 1 : p));
     };
       const goToPayment = async(dongNum,checkCoupon) => {  
     
@@ -92,6 +92,19 @@ const onMousePlusEnter=()=>{
 }
 const onMousePlusLeave=()=>{
   setPlusBtn(plusDefault)
+}
+const getDong=()=>{
+  const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
+  console.log("선택 프레임>>>",storedSelectedFrame.frame,photoNum)
+  let amount=0;
+  if (storedSelectedFrame.frame==="Stripx2") {
+    amount=70000
+  }
+  else {
+amount=100000
+  }
+ 
+return amount+50000*(photoNum-1)
 }
     return (
         <div
@@ -124,7 +137,7 @@ const onMousePlusLeave=()=>{
 
  <div
     className='price'
-    >{100000*5*photoNum}đ</div>
+    >{getDong()}đ</div>
  </div>
  <div className="check-box"  style={{ backgroundImage: `url(${checkBox})` }} 
  
