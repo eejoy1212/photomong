@@ -5,7 +5,10 @@ import axios from "axios";
 // const OriginBaseURL="http://118.33.212.138:8000"
 // //Flask
 // export const BaseURL = "http://118.33.212.138:5000"//"http://118.33.212.138:8000"
-
+const checkBaseUrl="http://118.33.212.138:9000"
+const checkAxiosInstance = axios.create({
+  baseURL: checkBaseUrl,
+});
 
 // // Django
 const OriginBaseURL="http://127.0.0.1:8000"
@@ -50,5 +53,9 @@ export const sendDongNum = async (dongNum, checkCoupon) => {
 export const getPhotos=async()=>{
   const { data } = await originAxiosInstance.get('/get_photo/')
   return data
+}
+export const checkPromotionCode=async(payload)=>{
+  const { data,status } = await checkAxiosInstance.post('/api/check_promotion_code',payload)
+  return [data,status]
 }
 // export const 
