@@ -1,4 +1,6 @@
 # 1. Project Overview (프로젝트 개요)
+-**실행 방법**
+  - run.bat 파일을 눌러 실행하세요
 - **사용 영상**
 
 https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
