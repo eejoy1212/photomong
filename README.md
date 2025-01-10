@@ -16,6 +16,8 @@ https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
 
 - **다국어 지원**
     - i18n , 베트남어 한국어 영어 몽골어
+      
+- **큐알코드로 이미지 다운로드**
 
 <br/>
 <br/>
@@ -24,7 +26,7 @@ https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
 ##3.1 Language
 |  |  |
 |-----------------|-----------------|
-| React.js    |<img src="https://img.shields.io/badge/react.js-5FA04E?style=for-the-badge&logo=reactdotjs&logoColor=white">| 
+| React.js    |<img src="https://img.shields.io/badge/react.js-61DAFB?style=for-the-badge&logo=react&logoColor=white">| 
 
 
 <br/>
