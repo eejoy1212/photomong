@@ -174,17 +174,17 @@ function Cash() {
           try {
                // const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
                // const response = await fetch(`${process.env.REACT_APP_BE_PROD}/payments/api/redeem?device=${deviceNumber}&code=${redeemCode}&amount=${frameAmount}`);
-              const response=await checkPromotionCode({
-               code:redeemCode
-              })
-               const paymentData = await response[0];
-               // console.log("체크 프로모션 코드",paymentData)
-               if (paymentData.message==="Promotion code is valid") {
-                    sessionStorage.setItem('orderCodeNum', redeemCode);
-                         navigate("/payment-result");
-               } else {
+          //     const response=await checkPromotionCode({
+          //      code:redeemCode
+          //     })
+          //      const paymentData = await response[0];
+          //      // console.log("체크 프로모션 코드",paymentData)
+          //      if (paymentData.message==="Promotion code is valid") {
+          //           sessionStorage.setItem('orderCodeNum', redeemCode);
+          //                navigate("/payment-result");
+          //      } else {
                     
-               }
+          //      }
                // if (paymentData.status === "OK") {
                //      sessionStorage.setItem('orderCodeNum', paymentData.order_code);
                //      navigate("/payment-result");
