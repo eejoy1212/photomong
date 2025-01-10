@@ -11,6 +11,9 @@ https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
 # 2. Key Features (주요 기능)
 - **스티커로 사진 데코**
   - 콘바 이미지 사용
+    
+- **필터 적용**
+  - 그레이스케일 , 세피아 등 필터를 찍은 사진에 적용
 
 - **초마다 사진찍기**
 
