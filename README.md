@@ -1,72 +1,34 @@
+# 1. Project Overview (프로젝트 개요)
+- **사용 영상**
 
-# PhotoMong
+https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
+- 프로젝트 이름: 포토몽
+- 프로젝트 설명: 스티커 사진 찍는 프로그램.
 
-Setup guide for PhotoMong
+<br/>
+<br/>
 
-## Software Requirement
+# 2. Key Features (주요 기능)
+- **스티커로 사진 데코**
+  - 콘바 이미지 사용
 
-https://docs.google.com/document/d/1FQ5ymvjH7Cqen4Xe6SP6PP8iYMq-D1Bs0hz6Q3kEq1c/edit?usp=sharing
+- **초마다 사진찍기**
 
-## Database Schema
+- **다국어 지원**
+    - i18n , 베트남어 한국어 영어 몽골어
 
-https://dbdiagram.io/d/Photomong-65f16a3db1f3d4062cce1cb5
+<br/>
+<br/>
 
-## Installation
-
-### Backend
-
-
-```bash
-  cd backend
-  pip install -r requirements.txt
-  python manage.py runserver
-```
-
-### Frontend (App)
-
-```bash
-  cd app
-  rm -rf node_modules
-  npm cache clean --force
-  npm install
-  npm start
-```
+# 3. Technology Stack (기술 스택)
+##3.1 Language
+|  |  |
+|-----------------|-----------------|
+| React.js    |<img src="https://img.shields.io/badge/node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white">| 
 
 
-## Usage/Examples
-
-```bash
-   run.bat
-```
-
-### Backend
-
-```javascript
-const axios = require('axios');
-let data = JSON.stringify({
-  "email": "test@gmail.com",
-  "password": "123"
-});
-
-let config = {
-  method: 'post',
-  maxBodyLength: Infinity,
-  url: 'http://localhost:8080/api/v1/accounts/login',
-  headers: { 
-    'Content-Type': 'application/json'
-  },
-  data : data
-};
-
-axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
-
-```
+<br/>
+<br/>
 
 
 
