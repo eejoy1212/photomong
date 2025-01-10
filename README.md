@@ -24,7 +24,7 @@ https://github.com/user-attachments/assets/df0bc83b-d844-4517-8348-95e77c7fa538
 ##3.1 Language
 |  |  |
 |-----------------|-----------------|
-| React.js    |<img src="https://img.shields.io/badge/node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white">| 
+| React.js    |<img src="https://img.shields.io/badge/react.js-5FA04E?style=for-the-badge&logo=reactdotjs&logoColor=white">| 
 
 
 <br/>
